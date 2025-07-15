@@ -80,15 +80,13 @@
 
     <!-- Code for Robots Tag -AK -->
     {% render 'robots_tag' %}
-    <link rel="preload" href="{{ 'base.css' | asset_url }}" as="style" fetchpriority="low">
-    <link rel="preload" href="{{ 'mobile-size-card-product.css' | asset_url }}" as="style" fetchpriority="low">
- 
-    <noscript><link rel="stylesheet" href="{{ 'base.css' | asset_url }}"></noscript>
-    <noscript><link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}"></noscript>
+    {% comment %} <link rel="preload" href="{{ 'base.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
+    {% comment %} <link rel="preload" href="{{ 'mobile-size-card-product.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
+
      <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
      <link href="{{ 'slick.min.js' | asset_url }}" rel="preload" as="script">
      <link href="{{ 'custom.min.js' | asset_url }}" rel="preload" as="script">
-        <link href="{{ 'global.js' | asset_url }}" rel="preload" as="script">
+     <link href="{{ 'global.js' | asset_url }}" rel="preload" as="script">
 
     
     <script src="{{ 'jquery.min.js' | asset_url }}"></script>
@@ -105,7 +103,7 @@
     {% endif %}
     {{ content_for_header }}
 
-    {%- liquid
+    {% comment %} {%- liquid
       render 'css-variables'
       echo 'base.css' | asset_url | stylesheet_tag: preload: true
       echo 'mobile-size-card-product.css' | asset_url | stylesheet_tag: preload: true
@@ -113,7 +111,16 @@
       if text_direction == 'rtl'
         echo 'rtl.css' | asset_url | stylesheet_tag
       endif
-    -%}
+    -%} {% endcomment %}
+
+    {% render 'css-variables' %}
+    {{ 'base.css' | asset_url | stylesheet_tag: preload: true  }} 
+    {% comment %} {{ 'mobile-size-card-product.css' | asset_url | stylesheet_tag: preload: true  }}  {% endcomment %}
+    <link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
+    {% if text_direction == 'rtl' %}
+      {{ 'rtl.css' | asset_url | stylesheet_tag: preload: true  }} 
+    {% endif %}
+
     <link href="{{ 'font-awesome.min.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
     {{ 'font-awesome.min.css' | asset_url | stylesheet_tag }}
     {%- unless settings.type_body_font.system? -%}
