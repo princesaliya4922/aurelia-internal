@@ -83,14 +83,15 @@
     {% comment %} <link rel="preload" href="{{ 'base.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
     {% comment %} <link rel="preload" href="{{ 'mobile-size-card-product.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
 
-     <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
-     <link href="{{ 'slick.min.js' | asset_url }}" rel="preload" as="script">
+     {% comment %} <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}"> {% endcomment %}
+     {% comment %} <link href="{{ 'slick.min.js' | asset_url }}" rel="preload" as="script"> {% endcomment %}
      <link href="{{ 'custom.min.js' | asset_url }}" rel="preload" as="script">
      <link href="{{ 'global.js' | asset_url }}" rel="preload" as="script">
 
-    
     <script src="{{ 'jquery.min.js' | asset_url }}"></script>
-    <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}"></script>
+    {% if template.name != 'product' %}
+      <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}"></script>
+    {% endif %}
     
 
     <script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer="defer"></script>
@@ -130,7 +131,9 @@
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
     <link href="{{ 'custom.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
-    <link href="{{ 'slick.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
+    {% if template.name != 'product' %}
+      <link href="{{ 'slick.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
+    {% endif %}
   
     {%- if settings.predictive_search_enabled -%}
       <link
@@ -168,7 +171,9 @@
       <noscript>{{ 'component-gift-wrapping.css' | asset_url | stylesheet_tag }}</noscript>
     {%- endif -%}
     {{ 'custom.css' | asset_url | stylesheet_tag }}
-    {{ 'slick.css' | asset_url | stylesheet_tag }}
+    {% if template.name != 'product' %}
+      {{ 'slick.css' | asset_url | stylesheet_tag }}
+    {% endif %}
     {% render 'aurelia-india-section' %}  
     {%- render 'js-variables' -%}
     {% if page.handle == 'career' %}
