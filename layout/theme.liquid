@@ -58,9 +58,9 @@
         >
   {% endif %}
 
-    {% if template contains 'product' %}
-      <link rel="preload" as="image" href="{{ product.featured_image | image_url: width:1100 }}" fetchpriority="high">
-    {% endif %}
+    {% comment %} {% if template contains 'product' %}
+      <link rel="preload" as="image" href="{{ product.featured_image | image_url: width: 1100 }}" fetchpriority="high">
+    {% endif %} {% endcomment %}
 
     {% assign firstProduct = collection.products.first %}
     {% if template.name == 'collection' %}
