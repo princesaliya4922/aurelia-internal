@@ -316,7 +316,7 @@
               {% for image in card_product.media limit:6 %}
                 <img
                   class="motion-reduce"
-                  src="{{ image | img_url: '600x' }}"
+                  src="{{ image | img_url: '400x' }}"
                   alt="{{ card_product.title | escape }}"
                   title="{{ card_product.title | escape }}"
                   width="665"
@@ -329,7 +329,7 @@
           {% else %}
             <img
               class="motion-reduce"
-              src="{{ image.preview_image | img_url: '600x' }}"
+              src="{{ image.preview_image | img_url: '400x' }}"
               alt="{{ card_product.title | escape }}"
               title="{{ card_product.title | escape }}"
               width="665"
@@ -342,7 +342,7 @@
               {% assign alt_2nd = image_2nd.alt | escape | split: '#' | first %}
               <img
                 class="motion-reduce"
-                src="{{ image_2nd.preview_image | img_url: '600x' }}"
+                src="{{ image_2nd.preview_image | img_url: '400x' }}"
                 alt="{{ card_product.title | escape }}"
                 title="{{ card_product.title | escape }}"
                 width="665"

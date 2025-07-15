@@ -408,7 +408,7 @@
                     {%- endif -%}
 
                     <button
-                      class="thumbnail media media--square"
+                      class="Princee thumbnail media media--square"
                       aria-label="{%- if media.media_type == 'image' -%}{{ 'products.product.media.load_image' | t: index: media_index }}{%- elsif media.media_type == 'model' -%}{{ 'products.product.media.load_model' | t: index: media_index }}{%- elsif media.media_type == 'video' or media.media_type == 'external_video' -%}{{ 'products.product.media.load_video' | t: index: media_index }}{%- endif -%}"
                       {% if media == featured_media or featured_media == null and forloop.first %}
                         aria-current="true"
@@ -420,7 +420,7 @@
                       {%- liquid
                         assign image_id = 'Thumbnail-' | append: section.id | append: '-' | append: forloop.index
                         assign alt = media.alt | escape | split: '#' | first
-                        echo media.preview_image | image_url: width: 416 | image_tag: loading: 'lazy', id: image_id, sizes: sizes, widths: '54, 74, 162, 208, 324, 416', alt: alt
+                        echo media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', id: image_id, sizes: sizes, widths: '54, 74, 162, 208, 324, 416', alt: alt
                       -%}
                     </button>
                   </li>
