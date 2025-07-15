@@ -95,24 +95,22 @@
     <div class="product__media image-animate media media--{{ image_ratio }}{% if mobile_image_ratio %} media-mobile--{{ mobile_image_ratio }}{% endif %} fancybox-button--zoom" data-fancybox="mygallery" href="{{ media.preview_image |img_url:'master' }}"
       {%- if image_ratio == 'adapt' or mobile_image_ratio == 'adapt' %} style="--image-ratio-percent: {{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 }}%;"{% endif -%}
     >
-      {% if position == 1 %}
-        {{ media.preview_image | image_url: width: 1500 | image_tag:
-          loading: 'eager',
-          sizes: sizes,
-          widths: widths,
-          alt: alt,
-          fetchpriority: 'high'
-        }}
-      {% else %}
-        {{ media.preview_image | image_url: width: 1500 | image_tag:
-          loading: 'lazy',
-          sizes: sizes,
-          widths: widths,
-          alt: alt,
-          is: 'lazy-image'
-        }}
-      {% endif %}
-      
+  <picture>
+    <!-- Desktop: screens 768px and up -->
+    <source media="(min-width: 768px)" 
+            srcset="{{ media.preview_image | image_url: width: 1100 }}">
+    
+    <!-- Mobile: screens below 768px -->
+    <source media="(max-width: 767px)" 
+            srcset="{{ media.preview_image | image_url: width: 500 }}">
+    
+    <!-- Fallback img tag -->
+    <img src="{{ media.preview_image | image_url: width: 1100 }}"
+        alt="{{ alt }}"
+        loading="{% if position == 1 %}eager{% else %}lazy{% endif %}"
+        {%- if position == 1 -%}fetchpriority="high"{%- endif -%} 
+    />
+  </picture>      
     </div>
   </use-animate>
   {%- if zoom -%}
