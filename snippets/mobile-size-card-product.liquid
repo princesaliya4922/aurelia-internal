@@ -1,0 +1,82 @@
+<div class="main__cart_card">
+  <div class="inner_cart_card">
+    <div class="close__cart_card">
+      <svg class="icon icon-close" aria-hidden="true" focusable="false" style="width: 1rem;height: 1rem;">
+          <use href="#icon-close"></use>
+        </svg>
+    </div>
+    <div class="select__size_txt">Select Size</div>
+    <div class="card_content_remaining"></div>
+  </div>
+</div>
+  <script>
+  /* __________________________Product card new design______________________ */
+  $(document).ready(function() {
+  $('body').on('click', '.cstm__size_coll a', function(e) {
+  e.preventDefault();
+ $(this).parents('.cstm__card_bottom').find('.cstm__size_coll a').removeClass('active_size');
+ $(this).addClass('active_size');
+ $('.size_error').remove();
+ var vid = $(this).attr('data-attr');
+ $(this).parents('.cstm__card_bottom').find('.cstm__card_button').attr('data-id',vid);
+    if($(window).width() < 749){
+     $(this).parents('.cstm__card_bottom').find('.cstm__card_button').trigger('click'); 
+    }
+  });
+  
+  $('body').on('click','.cstm__card_button',function(){
+    var id = $(this).attr('data-id');
+    var _this = this;
+    var amount = $(this).attr('data-amount');
+    var percent = $(this).attr('data-percent');
+     $('.size_error').remove();
+    var htm = `<div class="size_error">Please select size</div>`;
+    if(!id){
+      $(_this).before(htm);
+    }else{
+       $(this).addClass('loading');
+      $.ajax({
+      type: 'POST',
+      url: '/cart/add.js',
+      data: {
+        id: id,
+      quantity: 1,
+      properties:{
+        'Discount Amount':amount,
+        'Discount Percentage':percent
+      }
+      },
+      sections: "mini-cart",
+      dataType: 'json',
+      success: function(response) {
+      $.getJSON('/?sections=mini-cart,cart-icon-bubble,mobile-cart-icon-bubble').then( sections => {
+      const minicart  = document.querySelector('mini-cart');
+      response.sections = sections;
+      minicart.renderContents(response);
+      $(_this).removeClass('loading');
+      $('.main__cart_card').hide();
+      })
+      },
+      error: function() {
+        console.log('There was an error adding the item to the cart.');
+          $(_this).removeClass('loading');
+        $('.main__cart_card').hide();
+      }
+    });
+    }
+  });
+
+    $('body').on('click','.mobile__cart__icon',function(){
+     var htm = $(this).parents('.grid__item').find('.cstm__card_bottom').html();
+      $('.card_content_remaining').html(`<div class="cstm__card_bottom">${htm}</div>`);
+      // $('.card_content_remaining').find('button').text('Done');
+      console.log(document.querySelector('.main__cart_card'));
+      $(this).parents('.grid__item').find('use-animate .card__media').after(document.querySelector('.main__cart_card'));
+      $('.main__cart_card').show();
+    });
+    $('body').on('click','.close__cart_card',function(){
+      $('.main__cart_card').hide();
+    })
+    
+  });
+  </script>

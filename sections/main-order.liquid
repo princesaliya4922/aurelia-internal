@@ -1,0 +1,566 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'main-address.css' | asset_url | stylesheet_tag }}
+{{ 'order-custom.css' | asset_url | stylesheet_tag }}
+{{ 'order-details.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="account-main-section customer order page-width section--padding">
+  <div class="accountdeatil-left">
+   <ul class="sidebar">
+     <li {% if template contains 'account' %}class="active" {% endif %}><a href="/account" class="font-bold">Dashboard</a></li>
+     <li {% if template contains 'order' %}class="active" {% endif %}><a href="/pages/tab-order" class="font-bold">Orders & Returns</a></li> 
+     <li {% if template contains 'addresses' %}class="active" {% endif %}><a href="/account/addresses" class="font-bold">Address</a></li>
+   </ul>
+ </div> 
+  <div class="main-page-account accountdeatil-right">
+   <h2 class="font-bold-heading">{{ 'Order details'}}  <span class="order_number">-{{  order.name }}</span></h2>
+   {% render 'order-tracking',order:order %}
+        <div class="order__bottom">{% render 'order-details-bottom' %}</div>
+  </div>
+</div>
+{% render 'return-popup' %}
+{% render 'cancel-popup' %}
+{% render 'return-confirmation' %}
+{% schema %}
+{
+  "name": "t:sections.main-order.name",
+  "class":"def_order",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.header.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "t:sections.all.padding.padding_top.unit",
+      "label": "t:sections.all.padding.padding_top.label",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "t:sections.all.padding.padding_bottom.unit",
+      "label": "t:sections.all.padding.padding_bottom.label",
+      "default": 80
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  var order_id = `{{order.name}}`;
+  console.log(order_id);
+  var customer_phone = `{{ customer.phone }}`;
+  orderDetails(order_id,customer_phone)
+  function   orderDetails(order_id,customer_phone){
+    fetch('https://shopify.shopforaurelia.com/order/getdata', {
+      method: "POST",
+      res:"json",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "oid": `${order_id}`,
+        "mob": `${customer_phone}`
+       // "mob": `${customer_phone}`
+        //"oid": `28996`,
+        //"oid": `ww39616`,
+      
+      })
+    }).then((response) => {
+      return response.json();
+     }).then((response) => {
+      console.log(response);
+   if(response.success == true && response.data.GetSaleOrderResponse.Successful == 'true'){
+     
+     console.log(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.length);
+     console.log(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.isCancellable);
+      //console.log(response.SaleOrder.SaleOrderItems.SaleOrderItem.isReturnable);
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.length==undefined){
+       if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined){
+         if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails?.StatusCode=='REFUND_INITIATED'){
+         $('.def_order .order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails.StatusCode);
+     $('.def_order .order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails.StatusMessage)
+         }
+           else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails?.StatusCode=='REFUND_COMPLETED'){
+          $('.def_order .order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails.StatusCode);
+     $('.def_order .order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails.StatusMessage)
+           }
+         else{
+      // console.log(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode);
+         $('.def_order .order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusCode);
+     $('.def_order .order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusMessage)
+         }
+       }else{
+     $('.def_order .order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.StatusCode);
+     $('.def_order .order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.StatusMessage)
+       }
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.isCancellable=='true'){
+       $('.cancel__btn').show();
+     }else{
+       $('.cancel__btn').remove();
+       $('.main_calcel_popup .order__details_btns').hide();
+     }
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.isReturnable=='true'){
+       $('.retun__btn').show();
+     }else{
+      $('.retun__btn').remove(); 
+      $('.main_return_popup').find('.order__details_btns').hide();
+     }
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.StatusCode=='PROCESSING'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive');
+     }
+     else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.StatusCode=='DISPATCHED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive');
+     }
+    
+         else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails.StatusCode=='REFUND_INITIATED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done active"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done active"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+       
+        else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.RefundDetails.StatusCode=='REFUND_COMPLETED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done active"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done active"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done active"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done"><span>Refund Completed</span></li>
+       `);
+     }
+       else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusCode=='RETURN_UNDER_PROCESS'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done inactive"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done inactive"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done inactive"><span>Return Picked</span></li>
+       <li class="order_return_cancelled progtrckr-done inactive"><span>Return Cancelled</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+    else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusCode=='RETURN_CREATED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done inactive"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done inactive"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+     else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup?.StatusCode=='RETURN_PICKUP_SCHEDULED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done inactive"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+     else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup?.StatusCode=='RETURN_PICKED' || response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusCode=='COMPLETED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done active"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+           else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup?.StatusCode=='RETURN_CANCELLED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_cancelled progtrckr-done"><span>Return Cancelled</span></li>
+       `);
+     }
+
+     //   else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusCode=='COMPLETED'){
+     //     $('.def_order .order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusCode);
+     // $('.def_order .order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails.ReversePickup.StatusMessage);
+     //     $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+     //   <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+     //   <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+     //   `);        
+     //    }
+        
+       else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.StatusCode=='DELIVERED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_delivered').removeClass('inactive');
+     }
+        else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.StatusCode=='CANCELLED'){
+       $('ol.progtrckr .order_created').addClass('active');
+       $('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('ol.progtrckr .order_dispatched').remove();
+       $('ol.progtrckr .order_delivered').remove();
+       $('ol.progtrckr .order_processing').after(`<li class="order_delivered progtrckr-done active"><span>Cancelled</span></li>`);
+       // $('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       // $('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       // $('ol.progtrckr .order_delivered').after(`<li class="order_delivered progtrckr-done active"><span>Cancelled</span></li>`);
+     }
+     }else{
+    for(i=0;i<response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.length;i++){
+      if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined){
+     console.log('11166');console.log(i);
+        console.log(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusCode);
+        if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails?.StatusCode=='REFUND_INITIATED'){
+         $('.order__tracking_details').eq(i).find('.order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusCode);
+     $('.order__tracking_details').eq(i).find('.order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusMessage)
+        console.log(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusCode); 
+        }
+           else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails?.StatusCode=='REFUND_COMPLETED'){
+          $('.order__tracking_details').eq(i).find('.order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusCode);
+     $('.order__tracking_details').eq(i).find('.order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusMessage)
+            
+           }
+
+     //          else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='COMPLETED'){
+     //      $('.order__tracking_details').eq(i).find('.order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode);
+     // $('.order__tracking_details').eq(i).find('.order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusMessage);
+     //    $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+     //   <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+     //   <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+     //   `);        
+            
+     //       }
+        
+         else{
+      // console.log(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode);
+         $('.order__tracking_details').eq(i).find('.order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup?.StatusCode);
+      $('.order__tracking_details').eq(i).find('.order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem.ReturnDetails?.ReversePickup?.StatusMessage)
+         }
+           }else{
+     $('.order__tracking_details').eq(i).find('.order_status_btn').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].StatusCode);
+     $('.order__tracking_details').eq(i).find('.order_status_text').text(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].StatusMessage)
+      }
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].isCancellable=='true'){
+       $('.order__tracking_details').eq(i).find('.cancel__btn').show();
+     }else{
+      $('.order__tracking_details').eq(i).find('.cancel__btn').remove(); 
+      $('.main_calcel_popup').find('.order__details_btns').eq(i).hide();
+     }
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].isReturnable=='true'){
+       $('.order__tracking_details').eq(i).find('.retun__btn').show();
+     }else{
+      $('.order__tracking_details').eq(i).find('.retun__btn').remove(); 
+      $('.main_return_popup').find('.order__details_btns').eq(i).hide(); 
+     }
+     if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].StatusCode=='PROCESSING'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive');
+     }
+     else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].StatusCode=='DISPATCHED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive');
+     }
+     
+         else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusCode=='REFUND_INITIATED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done active"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done active"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+       
+        else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].RefundDetails.StatusCode=='REFUND_COMPLETED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done active"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done active"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done active"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done"><span>Refund Completed</span></li>
+       `);
+     }
+       else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='RETURN_UNDER_PROCESS'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done inactive"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done inactive"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done inactive"><span>Return Picked</span></li>
+       <li class="order_return_cancelled progtrckr-done inactive"><span>Return Cancelled</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+    else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='RETURN_CREATED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done inactive"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done inactive"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+     else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='RETURN_PICKUP_SCHEDULED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done inactive"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+     else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='RETURN_PICKED' || response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails?.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='COMPLETED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_created progtrckr-done active"><span>Return Created</span></li>
+       <li class="order_return_pickup_schedule progtrckr-done active"><span>Return Pickup Schedule</span></li>
+       <li class="order_return_picked progtrckr-done"><span>Return Picked</span></li>
+       <li class="order_refund_initiated progtrckr-done inactive"><span>Refund Initiated</span></li>
+       <li class="order_refund_completed progtrckr-done inactive"><span>Refund Completed</span></li>
+       `);
+     }
+           else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup != undefined && response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].ReturnDetails.ReversePickup.StatusCode=='RETURN_CANCELLED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active').after(`
+       <li class="order_return_under_process progtrckr-done active"><span>Return Under process</span></li>
+       <li class="order_return_cancelled progtrckr-done"><span>Return Cancelled</span></li>
+       `);
+     }
+        
+       else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].StatusCode=='DELIVERED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive');
+     }
+      else if(response.data.GetSaleOrderResponse.SaleOrder.SaleOrderItems.SaleOrderItem[i].StatusCode=='CANCELLED'){
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_created').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').remove();
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').remove();
+       $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').after(`<li class="order_delivered progtrckr-done active"><span>Cancelled</span></li>`);
+       // $('.order__tracking_details').eq(i).find('ol.progtrckr .order_processing').removeClass('inactive').addClass('active');
+       // $('.order__tracking_details').eq(i).find('ol.progtrckr .order_dispatched').removeClass('inactive').addClass('active');
+       // $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').removeClass('inactive').addClass('active');
+       // $('.order__tracking_details').eq(i).find('ol.progtrckr .order_delivered').after(`<li class="order_delivered progtrckr-done active"><span>Cancelled</span></li>`);
+     }
+    }
+     }
+     
+   }else{
+    
+   }
+    }).catch((error) => {
+      console.error("Error: ", error);
+    })
+
+    // $.ajax({
+    //   type: 'POST',
+    //   url: 'http://localhost:8000/order/get',
+    //   data: {
+    //    "oid": `WW1002527065`,
+   
+    //   },
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   dataType: 'json',
+    //   success: function (data) {
+    //    console.log(data);
+    //   },
+    //   error: function(xhr, ajaxOption, thrownError) {
+    //     console.log("error");
+    //   }
+    // });
+  }
+
+
+    $('body').on('click','.main_return_popup span.close__popup',function(){
+    $('.main_return_popup').hide();
+  });
+  $('body').on('click','.retun__btn',function(){
+    $('.main_return_popup').show();
+  });
+
+  $('body').on('click','.main_calcel_popup span.close__popup',function(){
+    $('.main_calcel_popup').hide();
+  });
+  $('body').on('click','.cancel__btn',function(){
+    $('.main_calcel_popup').show();
+  });
+
+  $('body').on('click','.calcel__butoon button',function(){
+    var all_items_arr =[];
+     var order_id = `{{order.name}}`;
+     var resion = $('.main_calcel_popup select').val();
+   $(this).parents('.main_calcel_popup').find('.order__details_btns').each(function(){
+      if ($(this).is(':checked')) {
+          all_items_arr.push($(this).attr('id'));
+      }
+   }).promise().done(function(){
+     var dummy_arr = all_items_arr;
+     all_items_arr = all_items_arr.toString();
+     if(dummy_arr.length > 1){
+         all_items_arr = `[${all_items_arr}]`;
+     }
+     console.log(all_items_arr);
+     console.log(resion);
+     console.log(order_id);
+     if(resion != null && all_items_arr != ''){
+       console.log('ddddd');
+     const url = 'https://shopify.shopforaurelia.com/order/cancelorder';
+      const options = {
+      method: 'POST',
+      headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+      "oid": `${order_id}`,
+      "soid":`${all_items_arr}`,
+      "rsn":`${resion}`,
+      "mob": `${customer_phone}`
+  
+      })
+      };
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then((data) =>{ 
+      window.location.reload();
+    console.log(data)
+    })
+    .catch(error => console.error('Error:', error));
+     }
+
+      });
+  })
+
+  $('body').on('click','.resion__butoon button',function(){
+     var all_items_arr =[];
+    var order_id = `{{order.name}}`;
+    var resion = $('.main_return_popup select').val();
+   $(this).parents('.main_return_popup').find('.order__details_btns').each(function(){
+      if ($(this).is(':checked')) {
+          all_items_arr.push($(this).attr('id'));
+      }
+   }).promise().done(function(){
+     var dummy_arr = all_items_arr;
+     all_items_arr = all_items_arr.toString();
+     if(dummy_arr.length > 1){
+         all_items_arr = `[${all_items_arr}]`;
+     }
+     console.log(all_items_arr);
+     if(resion != null && all_items_arr != ''){
+       console.log(resion);
+     const url = 'https://shopify.shopforaurelia.com/order/returnorder';
+      const options = {
+      method: 'POST',
+      headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+      "oid": `${order_id}`,
+      "soid":`${all_items_arr}`,
+      "rsn":`${resion}`,
+      "mob": `${customer_phone}`
+
+      })
+      };
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then((data) =>{ 
+      if(data.data.ReturnSaleOrderResponse.Successful == true){
+       $('.main_return_popup').hide();
+      $('.return_confirmation').show();
+      }
+    console.log(data.data.ReturnSaleOrderResponse.Successful)
+    })
+    .catch(error => console.error('Error:', error));
+     }
+      });
+  })
+
+  $('body').on('click','.return__confirmation_close',function(){
+    $('.return_confirmation').hide();
+     window.location.reload();
+  })
+</script>
