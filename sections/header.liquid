@@ -538,7 +538,7 @@
       </div> {% endcomment %}
       {% if section.settings.aditya_logo != blank %} 
       <div class="aditya_birla_logo">
-          <img loading="lazy" src="{{ section.settings.aditya_logo |img_url:'master' }}">
+          <img loading="lazy" src="{{ section.settings.aditya_logo | img_url: '100x' }}">
       </div>
      {% endif %}
     </div>

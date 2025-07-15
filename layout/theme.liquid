@@ -89,9 +89,9 @@
      <link href="{{ 'global.js' | asset_url }}" rel="preload" as="script">
 
     <script src="{{ 'jquery.min.js' | asset_url }}"></script>
-    {% if template.name != 'product' %}
+    {% comment %} {% if template.name != 'product' %} {% endcomment %}
       <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}"></script>
-    {% endif %}
+    {% comment %} {% endif %} {% endcomment %}
     
 
     <script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer="defer"></script>
@@ -171,9 +171,9 @@
       <noscript>{{ 'component-gift-wrapping.css' | asset_url | stylesheet_tag }}</noscript>
     {%- endif -%}
     {{ 'custom.css' | asset_url | stylesheet_tag }}
-    {% if template.name != 'product' %}
+    {% comment %} {% if template.name != 'product' %} {% endcomment %}
       {{ 'slick.css' | asset_url | stylesheet_tag }}
-    {% endif %}
+    {% comment %} {% endif %} {% endcomment %}
     {% render 'aurelia-india-section' %}  
     {%- render 'js-variables' -%}
     {% if page.handle == 'career' %}
