@@ -2,7 +2,7 @@
 <div class="offer_main_section">
   <div class="offer_with_icon">
     {% if block.settings.offer_img != blank %}
-      <img src="{{ block.settings.offer_img | img_url:'master' }}">
+      <img loading="lazy" src="{{ block.settings.offer_img | img_url:'master' }}">
     {% endif %}
   </div>
 </div>

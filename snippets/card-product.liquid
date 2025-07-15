@@ -322,7 +322,7 @@
                   width="665"
                   height="1000"
                   style="width:100%; height: auto;"
-                loading='eager'
+                loading='lazy'
                 >
               {% endfor %}
             </div>
@@ -335,7 +335,7 @@
               width="665"
               height="1000"
               style="width:100%; height: auto;"
-              loading="eager"
+              loading="lazy"
             >
             {% if card_product.media[1] != null and show_secondary_image %}
               {% assign image_2nd = card_product.media[1] %}

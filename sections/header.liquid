@@ -372,25 +372,21 @@
               assign mobile_transparent_logo = section.settings.mobile_transparent_logo | default: transparent_logo
             -%}
 
+            <picture>
             {%- if mobile_logo -%}
-              <img srcset="{{ mobile_logo | image_url: height: mobile_logo_height }} 1x, {{ mobile_logo | image_url: height: mobile_logo_height_2x }} 2x"
-                src="{{ mobile_logo | image_url: height: mobile_logo_height }}"
-                loading="eager"
-                width="{{ mobile_logo.width }}"
-                height="{{ mobile_logo.height }}"
-                alt="{{ mobile_logo.alt | default: shop.name | escape }}"
-                class="header__heading-logo{% if enable_transparent_header and transparent_logo != blank %} normal{% endif %} medium-hide large-up-hide"
-              />
+              <source media="(max-width: 749px)" 
+                      srcset="{{ mobile_logo | image_url: height: mobile_logo_height }} 1x, {{ mobile_logo | image_url: height: mobile_logo_height_2x }} 2x">
             {%- endif -%}
-
-            <img srcset="{{ logo | image_url: height: logo_height }} 1x, {{ logo | image_url: height: logo_height_2x }} 2x"
-              src="{{ logo | image_url: height: logo_height }}"
-              loading="eager"
-              width="{{ logo.width }}"
-              height="{{ logo.height }}"
-              alt="{{ logo.alt | default: shop.name | escape }}"
-              class="header__heading-logo{% if enable_transparent_header and transparent_logo != blank %} normal{% endif %}{% if mobile_logo %} small-hide{% endif %}"
+            
+            <img src="{{ logo | image_url: height: logo_height }}"
+                srcset="{{ logo | image_url: height: logo_height }} 1x, {{ logo | image_url: height: logo_height_2x }} 2x"
+                loading="lazy"
+                width="{{ logo.width }}"
+                height="{{ logo.height }}"
+                alt="{{ logo.alt | default: shop.name | escape }}"
+                class="header__heading-logo{% if enable_transparent_header and transparent_logo != blank %} normal{% endif %}"
             />
+          </picture>
 
             {%- if enable_transparent_header and transparent_logo != blank -%}
               {%- if mobile_transparent_logo != blank -%}
@@ -542,7 +538,7 @@
       </div> {% endcomment %}
       {% if section.settings.aditya_logo != blank %} 
       <div class="aditya_birla_logo">
-          <img src="{{ section.settings.aditya_logo |img_url:'master' }}">
+          <img loading="lazy" src="{{ section.settings.aditya_logo |img_url:'master' }}">
       </div>
      {% endif %}
     </div>
