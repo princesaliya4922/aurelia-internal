@@ -319,7 +319,12 @@ setSourceCookie();
     {% if template contains 'collection' %}
       {% render 'similar-pop-up' %}
     {% endif %}
-    {% render 'mobile-size-card-product' %}    
+    {% render 'mobile-size-card-product' %} 
+    
+    {% comment %} Render on js {% endcomment %}
+    {% if template.name == 'product' %}
+      {% render 'product-render-js-asset' %}
+    {% endif %}
 
     <script src='https://static-cdn.trackier.com/js/trackier-web-sdk.js' defer></script>
     <script>window.TrackierWebSDK.init();</script>

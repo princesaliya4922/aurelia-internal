@@ -1,0 +1,45 @@
+function loadScripts(e) {
+    setTimeout(function () {
+    // loadScript("{{ '' | asset_url }}");
+    // loadCSS("{{ '' | asset_url }}");
+
+  }, 10);
+
+
+  // Remove event listeners after scripts are loaded
+  document.removeEventListener('click', loadScripts);
+  document.removeEventListener('mouseover', loadScripts);
+  document.removeEventListener('scroll', loadScripts);
+}
+
+// Check if the user is beyond 400px from the top
+if (window.scrollY >= 400) {
+  loadScripts(); // Load immediately if user is already past 400px
+} else {
+  // Wait for user interaction
+  document.addEventListener('mouseover', loadScripts);
+  document.addEventListener('click', loadScripts);
+  document.addEventListener('scroll', loadScripts);
+}
+
+function loadScript(src) {
+  var script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
+function loadScriptWithCallBack(src, callback) {
+  var script = document.createElement('script');
+  script.src = src;
+  script.onload = callback || function () {};
+  document.head.appendChild(script);
+}
+
+function loadCSS(href) {
+  var link = document.createElement('link');
+  link.href = href;
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  document.head.appendChild(link);
+}
