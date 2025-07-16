@@ -49,6 +49,9 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
+    {% comment %} fontfaces {% endcomment %}
+    {{ 'fontfaces.css' | asset_url | stylesheet_tag: preload: true  }} 
+
     {% if template.name == 'index' %}
         <link
           fetchpriority="high"
@@ -122,8 +125,11 @@
       {{ 'rtl.css' | asset_url | stylesheet_tag: preload: true  }} 
     {% endif %}
 
-    <link href="{{ 'font-awesome.min.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
-    {{ 'font-awesome.min.css' | asset_url | stylesheet_tag }}
+    {% if template.name != 'product' %}
+      <link href="{{ 'font-awesome.min.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
+      {{ 'font-awesome.min.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
@@ -323,6 +329,9 @@ setSourceCookie();
     
     {% comment %} Render on js {% endcomment %}
     {% if template.name == 'product' %}
+
+      <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
+
       {% render 'product-render-js-asset' %}
     {% endif %}
 
