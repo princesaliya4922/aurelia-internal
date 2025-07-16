@@ -9,7 +9,7 @@
     <div class="cstm_inner">  
       <a class="cstm_varient_img {% if product.url == productv.url %} active__product {% endif %}" href="{{ productv.url }}" >
         <img class="check_cstm" src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/19x19.png?v=1688972717" alt="svg" width="" height="">
-        <img class="prod_img" src="{{ productv.featured_image | img_url:'500x' }}" width="60" height="">
+        <img loading="lazy" class="prod_img" src="{{ productv.featured_image | img_url:'500x' }}" width="60" height="">
       </a>
     </div>
       {% endif %}
