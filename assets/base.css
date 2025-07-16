@@ -146,6 +146,10 @@ html {
   margin-top: 3rem;
 }
 
+.custom_header .header {
+  display: flex;
+}
+
 @media screen and (min-width: 750px) {
   .element-margin {
     margin-top: calc(5rem + var(--page-width-margin));

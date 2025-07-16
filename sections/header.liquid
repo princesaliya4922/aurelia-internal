@@ -123,8 +123,8 @@
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
- <link href="{{ 'custom-header.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
- {{ 'custom-header.css' | asset_url | stylesheet_tag }}
+ {% comment %} <link href="{{ 'custom-header.css' | asset_url }}" rel="preload" as="style" fetchpriority="low"> {% endcomment %}
+ {% comment %} {{ 'custom-header.css' | asset_url | stylesheet_tag }} {% endcomment %}
 {%- if settings.cart_drawer_enabled -%}
 <link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">

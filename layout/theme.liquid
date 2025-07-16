@@ -107,16 +107,6 @@
     {% endif %}
     {{ content_for_header }}
 
-    {% comment %} {%- liquid
-      render 'css-variables'
-      echo 'base.css' | asset_url | stylesheet_tag: preload: true
-      echo 'mobile-size-card-product.css' | asset_url | stylesheet_tag: preload: true
-
-      if text_direction == 'rtl'
-        echo 'rtl.css' | asset_url | stylesheet_tag
-      endif
-    -%} {% endcomment %}
-
     {% render 'css-variables' %}
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true  }} 
     {% comment %} {{ 'mobile-size-card-product.css' | asset_url | stylesheet_tag: preload: true  }}  {% endcomment %}
@@ -176,9 +166,9 @@
       >
       <noscript>{{ 'component-gift-wrapping.css' | asset_url | stylesheet_tag }}</noscript>
     {%- endif -%}
-    {{ 'custom.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.css' | asset_url | stylesheet_tag: preload: true }}
     {% comment %} {% if template.name != 'product' %} {% endcomment %}
-      {{ 'slick.css' | asset_url | stylesheet_tag }}
+    {{ 'slick.css' | asset_url | stylesheet_tag: preload: true }}
     {% comment %} {% endif %} {% endcomment %}
     {% render 'aurelia-india-section' %}  
     {%- render 'js-variables' -%}
@@ -331,6 +321,7 @@ setSourceCookie();
     {% if template.name == 'product' %}
 
       <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
+      <link rel="stylesheet" href="{{ 'custom-header.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
 
       {% render 'product-render-js-asset' %}
     {% endif %}
