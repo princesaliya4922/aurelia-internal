@@ -111,6 +111,7 @@
       {% endif %}
     >
     <img
+      class="lazyload-image"
       {% if position == 1 %}
         src="{{ media.preview_image | image_url: width: 1100 }}"
         loading="eager"

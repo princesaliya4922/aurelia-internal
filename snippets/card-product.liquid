@@ -327,16 +327,31 @@
               {% endfor %}
             </div>
           {% else %}
-            <img
-              class="motion-reduce"
-              src="{{ image.preview_image | img_url: '400x' }}"
-              alt="{{ card_product.title | escape }}"
-              title="{{ card_product.title | escape }}"
-              width="665"
-              height="1000"
-              style="width:100%; height: auto;"
-              loading="lazy"
-            >
+            {% if lazy_load == true %}
+              <img
+                class="motion-reduce lazyload-image"
+                data-src="{{ image.preview_image | img_url: '400x' }}"
+                src="{{ image.preview_image | img_url: '20x' }}"
+                alt="{{ card_product.title | escape }}"
+                title="{{ card_product.title | escape }}"
+                width="665"
+                height="1000"
+                style="width:100%; height: auto;"
+                loading="lazy"
+              >
+            {% else %}
+              <img
+                class="motion-reduce"
+                src="{{ image.preview_image | img_url: '400x' }}"
+                alt="{{ card_product.title | escape }}"
+                title="{{ card_product.title | escape }}"
+                width="665"
+                height="1000"
+                style="width:100%; height: auto;"
+                loading="lazy"
+              >
+            {% endif %}
+
             {% if card_product.media[1] != null and show_secondary_image %}
               {% assign image_2nd = card_product.media[1] %}
               {% assign alt_2nd = image_2nd.alt | escape | split: '#' | first %}
