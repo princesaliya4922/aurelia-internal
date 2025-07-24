@@ -60,6 +60,19 @@
               <div class="image-animate media media--{{ block.settings.promo_image_ratio_1 }}"
                 style="--image-position: {{ block.settings.promo_image_position_1 }};{% if block.settings.promo_image_ratio_1 == 'adapt' %}--image-ratio-percent: {{ 1 | divided_by: block.settings.promo_image_1.aspect_ratio | times: 100 }}%;{% endif %}"
               >
+                {% if template.name == 'product' %}
+                <img
+                  class="motion-reduce lazyload-hover-image"
+                  data-src="{{ block.settings.promo_image_1 | img_url: '1100x' }}"
+                  src="{{ block.settings.promo_image_1 | img_url: '20x' }}"
+                  alt="{{ block.settings.promo_image_1.alt | escape }}"
+                  title="{{ block.settings.promo_image_1.title | escape }}"
+                  width="665"
+                  height="1000"
+                  style="width:100%; height: auto;"
+                  loading="lazy"
+                > 
+                {% else %}
                 {{ block.settings.promo_image_1 | image_url: width: 1100 | image_tag:
                   loading: 'lazy',
                   class: 'motion-reduce',
@@ -67,6 +80,7 @@
                   widths: '165, 360, 535, 750, 940, 1100',
                   is: 'lazy-image'                                                                                                                                   
                 }}
+                {% endif %}
               </div>
               {%- if block.settings.promo_heading_1 != blank or block.settings.promo_text_1 != blank -%}
                 <div class="mega-menu__promo-content">
@@ -88,6 +102,19 @@
               <div class="image-animate media media--{{ block.settings.promo_image_ratio_2 }}"
                 style="--image-position: {{ block.settings.promo_image_position_2 }};{% if block.settings.promo_image_ratio_2 == 'adapt' %}--image-ratio-percent: {{ 1 | divided_by: block.settings.promo_image_2.aspect_ratio | times: 100 }}%;{% endif %}"
               >
+                {% if template.name == 'product' %}
+                  <img
+                    class="motion-reduce lazyload-hover-image"
+                    data-src="{{ block.settings.promo_image_2 | img_url: '1100x' }}"
+                    src="{{ block.settings.promo_image_2 | img_url: '20x' }}"
+                    alt="{{ block.settings.promo_image_2.alt | escape }}"
+                    title="{{ block.settings.promo_image_2.title | escape }}"
+                    width="665"
+                    height="1000"
+                    style="width:100%; height: auto;"
+                    loading="lazy"
+                  > 
+                  {% else %}
                 {{ block.settings.promo_image_2 | image_url: width: 1100 | image_tag:
                   loading: 'lazy',
                   class: 'motion-reduce',
@@ -95,6 +122,7 @@
                   widths: '165, 360, 535, 750, 940, 1100',
                   is: 'lazy-image'
                 }}
+                {% endif %}
               </div>
               {%- if block.settings.promo_heading_2 != blank or block.settings.promo_text_2 != blank -%}
                 <div class="mega-menu__promo-content">
@@ -116,6 +144,19 @@
               <div class="image-animate media media--{{ block.settings.promo_image_ratio_3 }}"
                 style="--image-position: {{ block.settings.promo_image_position_3 }};{% if block.settings.promo_image_ratio_3 == 'adapt' %}--image-ratio-percent: {{ 1 | divided_by: block.settings.promo_image_3.aspect_ratio | times: 100 }}%;{% endif %}"
               >
+                {% if template.name == 'product' %}
+                  <img
+                    class="motion-reduce lazyload-hover-image"
+                    data-src="{{ block.settings.promo_image_3 | img_url: '1100x' }}"
+                    src="{{ block.settings.promo_image_3 | img_url: '20x' }}"
+                    alt="{{ block.settings.promo_image_3.alt | escape }}"
+                    title="{{ block.settings.promo_image_3.title | escape }}"
+                    width="665"
+                    height="1000"
+                    style="width:100%; height: auto;"
+                    loading="lazy"
+                  > 
+                  {% else %}
                 {{ block.settings.promo_image_3 | image_url: width: 1100 | image_tag:
                   loading: 'lazy',
                   class: 'motion-reduce',
@@ -123,6 +164,7 @@
                   widths: '165, 360, 535, 750, 940, 1100',
                   is: 'lazy-image'
                 }}
+                {% endif %}
               </div>
               {%- if block.settings.promo_heading_3 != blank or block.settings.promo_text_3 != blank -%}
                 <div class="mega-menu__promo-content">
@@ -144,6 +186,19 @@
               <div class="image-animate media media--{{ block.settings.promo_image_ratio_4 }}"
                 style="--image-position: {{ block.settings.promo_image_position_4 }};{% if block.settings.promo_image_ratio_4 == 'adapt' %}--image-ratio-percent: {{ 1 | divided_by: block.settings.promo_image_4.aspect_ratio | times: 100 }}%;{% endif %}"
               >
+                {% if template.name == 'product' %}
+                  <img
+                    class="motion-reduce lazyload-hover-image"
+                    data-src="{{ block.settings.promo_image_4 | img_url: '1100x' }}"
+                    src="{{ block.settings.promo_image_4 | img_url: '20x' }}"
+                    alt="{{ block.settings.promo_image_4.alt | escape }}"
+                    title="{{ block.settings.promo_image_4.title | escape }}"
+                    width="665"
+                    height="1000"
+                    style="width:100%; height: auto;"
+                    loading="lazy"
+                  > 
+                  {% else %}
                 {{ block.settings.promo_image_4 | image_url: width: 1100 | image_tag:
                   loading: 'lazy',
                   class: 'motion-reduce',
@@ -151,6 +206,7 @@
                   widths: '165, 360, 535, 750, 940, 1100',
                   is: 'lazy-image'
                 }}
+                {% endif %}
               </div>
               {%- if block.settings.promo_heading_4 != blank or block.settings.promo_text_4 != blank -%}
                 <div class="mega-menu__promo-content">
@@ -172,6 +228,19 @@
               <div class="image-animate media media--{{ block.settings.promo_image_ratio_5 }}"
                 style="--image-position: {{ block.settings.promo_image_position_5 }};{% if block.settings.promo_image_ratio_5 == 'adapt' %}--image-ratio-percent: {{ 1 | divided_by: block.settings.promo_image_5.aspect_ratio | times: 100 }}%;{% endif %}"
               >
+                {% if template.name == 'product' %}
+                  <img
+                    class="motion-reduce lazyload-hover-image"
+                    data-src="{{ block.settings.promo_image_5 | img_url: '1100x' }}"
+                    src="{{ block.settings.promo_image_5 | img_url: '20x' }}"
+                    alt="{{ block.settings.promo_image_5.alt | escape }}"
+                    title="{{ block.settings.promo_image_5.title | escape }}"
+                    width="665"
+                    height="1000"
+                    style="width:100%; height: auto;"
+                    loading="lazy"
+                  > 
+                  {% else %}
                 {{ block.settings.promo_image_5 | image_url: width: 1100 | image_tag:
                   loading: 'lazy',
                   class: 'motion-reduce',
@@ -179,6 +248,7 @@
                   widths: '165, 360, 535, 750, 940, 1100',
                   is: 'lazy-image'
                 }}
+                {% endif %}
               </div>
               {%- if block.settings.promo_heading_5 != blank or block.settings.promo_text_5 != blank -%}
                 <div class="mega-menu__promo-content">
@@ -200,6 +270,19 @@
               <div class="image-animate media media--{{ block.settings.promo_image_ratio_6 }}"
                 style="--image-position: {{ block.settings.promo_image_position_6 }};{% if block.settings.promo_image_ratio_6 == 'adapt' %}--image-ratio-percent: {{ 1 | divided_by: block.settings.promo_image_6.aspect_ratio | times: 100 }}%;{% endif %}"
               >
+                {% if template.name == 'product' %}
+                  <img
+                    class="motion-reduce lazyload-hover-image"
+                    data-src="{{ block.settings.promo_image_1 | img_url: '1100x' }}"
+                    src="{{ block.settings.promo_image_1 | img_url: '20x' }}"
+                    alt="{{ block.settings.promo_image_1.alt | escape }}"
+                    title="{{ block.settings.promo_image_1.title | escape }}"
+                    width="665"
+                    height="1000"
+                    style="width:100%; height: auto;"
+                    loading="lazy"
+                  > 
+                  {% else %}
                 {{ block.settings.promo_image_6 | image_url: width: 1100 | image_tag:
                   loading: 'lazy',
                   class: 'motion-reduce',
@@ -207,6 +290,7 @@
                   widths: '165, 360, 535, 750, 940, 1100',
                   is: 'lazy-image'
                 }}
+                {% endif %}
               </div>
               {%- if block.settings.promo_heading_6 != blank or block.settings.promo_text_6 != blank -%}
                 <div class="mega-menu__promo-content">

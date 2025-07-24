@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ------------------------------
+  // 1. STANDARD LAZY LOAD (IntersectionObserver)
+  // ------------------------------
+
   const lazyLoadImage = (img) => {
     if (!img || img.dataset.loaded === 'true') return;
 
-    console.log('Loading image:', img.dataset.src);
-
     if (img.dataset.src) {
+      console.log('Loading lazy image:', img.dataset.src);
       img.src = img.dataset.src;
       img.removeAttribute('data-src');
     }
@@ -14,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const observerOptions = {
-    root: null,            // viewport
-    threshold: 0.05         // load when 5% visible
+    root: null,
+    threshold: 0.1
   };
 
   const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -27,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, observerOptions);
 
-  // Function to start observing one or more images
   const observeImages = (images) => {
     images.forEach(img => {
       if (!img.dataset.loaded) {
@@ -36,23 +38,80 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Initially observe all existing lazyload-image elements
+  // Observe initial lazy images
   observeImages(document.querySelectorAll('img.lazyload-image'));
 
-  // Watch for new elements added to the DOM
+
+  // ------------------------------
+  // 2. HOVER / INTERACTION-BASED LAZY LOAD
+  // ------------------------------
+
+  const lazyLoadHoverImage = (img) => {
+    if (!img || img.dataset.loaded === 'true') return;
+
+    if (img.dataset.src) {
+      console.log('Loading hover image:', img.dataset.src);
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    }
+
+    img.dataset.loaded = 'true';
+  };
+
+  const lazyLoadAllHoverImages = () => {
+    document.querySelectorAll('img.lazyload-hover-image').forEach(img => {
+      if (!img.dataset.loaded) {
+        lazyLoadHoverImage(img);
+      }
+    });
+  };
+
+  const triggerLazyLoadOnInteraction = () => {
+    lazyLoadAllHoverImages();
+    removeHoverListeners();
+  };
+
+  const removeHoverListeners = () => {
+    window.removeEventListener('mouseover', triggerLazyLoadOnInteraction);
+    window.removeEventListener('scroll', triggerLazyLoadOnInteraction);
+    window.removeEventListener('touchstart', triggerLazyLoadOnInteraction);
+  };
+
+  window.addEventListener('mouseover', triggerLazyLoadOnInteraction, { once: true });
+  window.addEventListener('scroll', triggerLazyLoadOnInteraction, { once: true });
+  window.addEventListener('touchstart', triggerLazyLoadOnInteraction, { once: true });
+
+
+  // ------------------------------
+  // 3. MUTATION OBSERVER FOR DYNAMIC ELEMENTS
+  // ------------------------------
+
   const mutationObserver = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
       mutation.addedNodes.forEach(node => {
         if (node.nodeType === 1) { // Element node
-          if (node.matches && node.matches('img.lazyload-image')) {
+
+          // Case 1: A single lazyload-image
+          if (node.matches?.('img.lazyload-image')) {
             observeImages([node]);
-          } else {
-            // Check descendants
-            const imgs = node.querySelectorAll?.('img.lazyload-image');
-            if (imgs?.length) {
-              observeImages(imgs);
-            }
           }
+
+          // Case 2: A single lazyload-hover-image
+          if (node.matches?.('img.lazyload-hover-image')) {
+            lazyLoadHoverImage(node);
+          }
+
+          // Case 3: Descendants
+          const lazyImages = node.querySelectorAll?.('img.lazyload-image');
+          if (lazyImages?.length) {
+            observeImages(lazyImages);
+          }
+
+          const hoverImages = node.querySelectorAll?.('img.lazyload-hover-image');
+          if (hoverImages?.length) {
+            hoverImages.forEach(img => lazyLoadHoverImage(img));
+          }
+
         }
       });
     });
