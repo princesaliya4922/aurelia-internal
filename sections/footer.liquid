@@ -9,17 +9,28 @@
   }
 {%- endstyle -%}
 
-<link href="{{ 'section-footer.css' | asset_url }}" rel="preload" as="style">
-{{ 'section-footer.css' | asset_url | stylesheet_tag }}
-<link href="{{ 'custom-footer.css' | asset_url }}" rel="preload" as="style">
-{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+{% comment %} <link href="{{ 'section-footer.css' | asset_url }}" rel="preload" as="style"> {% endcomment %}
+{% comment %} {{ 'section-footer.css' | asset_url | stylesheet_tag }} {% endcomment %}
+{% comment %} <link href="{{ 'custom-footer.css' | asset_url }}" rel="preload" as="style"> {% endcomment %}
+{% comment %} {{ 'custom-footer.css' | asset_url | stylesheet_tag }} {% endcomment %}
 
-<link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}" media="print" onload="this.media='all'">
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'section-footer.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'custom-footer.css' | asset_url }}" media="print" onload="this.media='all'">
+{% comment %} {{ 'section-footer.css' | asset_url | stylesheet_tag }} {% endcomment %}
+{% comment %} {{ 'custom-footer.css' | asset_url | stylesheet_tag }} {% endcomment %}
+  <link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}" media="print" onload="this.media='all'">
+{% endunless %}
+
+
 <link rel="stylesheet" href="{{ 'component-accordion.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-list-payment.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-list-social.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
+{% unless template.name == 'product' %}
+
+  <link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-list-payment.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-list-social.css' | asset_url }}" media="print" onload="this.media='all'">
+{% endunless %}
 
 <noscript>{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'component-accordion.css' | asset_url | stylesheet_tag }}</noscript>

@@ -284,7 +284,7 @@ span.data_variant__qunatity {
     font-weight: 600;
 }
 .cstm__card_bottom .button{
-  min-width: unset;
+  min-width: unset !important;
 }
 
 @media screen and (min-width: 750px){

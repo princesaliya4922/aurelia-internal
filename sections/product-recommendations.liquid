@@ -13,8 +13,8 @@
 
 {% unless template.name == 'product' %}
   <link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
-  <link rel="stylesheet" href="{{ 'section-product-recommendations.css' | asset_url }}" media="print" onload="this.media='all'">
 {% endunless %}
+<link rel="stylesheet" href="{{ 'section-product-recommendations.css' | asset_url }}" media="print" onload="this.media='all'">
 
 {% if template.name == 'product' %}
   {{ 'component-price.css' | asset_url | stylesheet_tag: preload: true }}

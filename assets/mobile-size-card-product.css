@@ -81,8 +81,8 @@
     font-size: 14px;
 }
 .cstm__card_button{
-  border:1px solid #FFAC31;
-  color:#FFAC31;
+  border:1px solid #FFAC31 !important;
+  color:#FFAC31 !important;
 }
 .cstm__card_button:after{
   background-color: #FFAC31;
