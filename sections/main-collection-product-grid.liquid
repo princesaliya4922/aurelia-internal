@@ -37,7 +37,9 @@
 {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
 <link href="{{ 'component-card.css' | asset_url }}" rel="preload" as="style">
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{% unless template.name == 'product' %}
+  {{ 'component-price.css' | asset_url | stylesheet_tag : preload: true }}
+{% endunless %}
 <link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
 {{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
 

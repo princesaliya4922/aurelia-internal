@@ -50,7 +50,10 @@
     </title>
 
     {% comment %} fontfaces {% endcomment %}
-    {{ 'fontfaces.css' | asset_url | stylesheet_tag: preload: true  }} 
+     {% unless template.name == 'product' %}
+      <link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}" media="print" onload="this.media='all'">
+     {% endunless %}
+    {% comment %} {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }} {% endcomment %}
 
     {% if template.name == 'index' %}
         <link
@@ -110,14 +113,16 @@
     {% render 'css-variables' %}
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true  }} 
     {% comment %} {{ 'mobile-size-card-product.css' | asset_url | stylesheet_tag: preload: true  }}  {% endcomment %}
-    <link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
+    {% unless template.name == 'product' %}
+      <link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
+    {% endunless %}
     {% if text_direction == 'rtl' %}
       {{ 'rtl.css' | asset_url | stylesheet_tag: preload: true  }} 
     {% endif %}
 
     {% if template.name != 'product' %}
-      <link href="{{ 'font-awesome.min.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
-      {{ 'font-awesome.min.css' | asset_url | stylesheet_tag }}
+      <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link href="{{ 'custom.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
     {% endif %}
 
     {%- unless settings.type_body_font.system? -%}
@@ -126,34 +131,40 @@
     {%- unless settings.type_header_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
-    <link href="{{ 'custom.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
+    
     {% if template.name != 'product' %}
       <link href="{{ 'slick.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
     {% endif %}
   
     {%- if settings.predictive_search_enabled -%}
-      <link
+      {% unless template.name == 'product' %}
+        <link
         rel="stylesheet"
         href="{{ 'component-predictive-search.css' | asset_url }}"
         media="print"
         onload="this.media='all'"
       >
+      {% endunless %}
     {%- endif -%}
     {%- if settings.quick_view_enabled -%}
-      <link
+     {% unless template.name == 'product' %}
+       <link
         rel="stylesheet"
         href="{{ 'component-quick-view.css' | asset_url }}"
         media="print"
         onload="this.media='all'"
       >
+     {% endunless %}
     {%- endif -%}
     {%- if settings.color_swatches_enabled -%}
-      <link
+      {% unless template.name == 'product' %}
+        <link
         rel="stylesheet"
         href="{{ 'component-color-swatches.css' | asset_url }}"
         media="print"
         onload="this.media='all'"
       >
+      {% endunless %}
     {%- endif -%}
     {%- if linklists['gift-wrapping'].links != blank
       and linklists['gift-wrapping'].links.first.type == 'product_link'
@@ -319,8 +330,6 @@ setSourceCookie();
     
     {% comment %} Render on js {% endcomment %}
     {% if template.name == 'product' %}
-
-      <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
       <link rel="stylesheet" href="{{ 'custom-header.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
 
       {% render 'product-render-js-asset' %}

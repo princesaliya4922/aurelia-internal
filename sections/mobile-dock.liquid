@@ -14,8 +14,10 @@
   }
 {%- endstyle -%}
 
-<link rel="stylesheet" href="{{ 'section-mobile-dock.css' | asset_url }}" media="print" onload="this.media='all'">
-<noscript>{{ 'section-mobile-dock.css' | asset_url | stylesheet_tag }}</noscript>
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'section-mobile-dock.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript>{{ 'section-mobile-dock.css' | asset_url | stylesheet_tag }}</noscript>
+{% endunless %}
 <script src="{{ 'mobile-dock.js' | asset_url }}" defer="defer"></script>
 
 {%- if section.blocks.size > 0 -%}

@@ -29,8 +29,10 @@
 <link href="{{ 'component-rating.css' | asset_url }}" rel="preload" as="style">
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
-<link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-product-review.css' | asset_url }}" media="print" onload="this.media='all'">
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-product-review.css' | asset_url }}" media="print" onload="this.media='all'">
+{% endunless %}
 
 {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
 {%- if first_3d_model and section.settings.enable_layered_images == false -%}

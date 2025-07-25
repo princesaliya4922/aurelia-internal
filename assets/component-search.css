@@ -21,8 +21,8 @@
 }
 
 .search-modal {
-  z-index: 30;
-  display: block;
+  z-index: 30 !important;
+  display: block !important;
   height: 100%;
   transition: height var(--duration-long) ease;
 }
@@ -208,7 +208,7 @@ details[open] > .search-modal .modal-overlay::after {
   }
 
   .search-modal {
-    position: fixed;
+    position: fixed !important;
   }
 
   details[open]>.search-modal .modal-overlay:after {

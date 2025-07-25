@@ -123,7 +123,9 @@
 </product-form>
 {% endif %}
 {%- if show_pickup_availability -%}
-  {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+  {% unless template.name == 'product' %}
+    {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag : preload: true }}
+  {% endunless %}
   {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities | where: 'pick_up_enabled', true -%}
   <pickup-availability class="product__pickup-availabilities no-js-hidden"
     {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %} available{% endif %}

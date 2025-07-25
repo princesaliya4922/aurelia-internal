@@ -17,7 +17,9 @@
 
   {%- if settings.quick_view_enabled and section.settings.enable_quick_view -%}
     <link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
+    {% unless template.name == 'product' %}
+      <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
+    {% endunless %}
   {%- endif -%}
 
   <div class="cart-recommendate section--padding{% if section.settings.show_divider %} section--divider{% endif %}">

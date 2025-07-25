@@ -164,8 +164,9 @@
   {%- endcapture -%}
 {%- endif -%}
 
-<link href="{{ 'component-rating.css' | asset_url }}" rel="preload" as="style">
-{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'component-rating.css' | asset_url }}" media="print" onload="this.media='all'">
+{% endunless %}
 
 <div class="card-wrapper">
   <a href="{{ card_url_with_default }}" class="full-unstyled-link-1">

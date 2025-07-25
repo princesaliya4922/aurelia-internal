@@ -1,8 +1,17 @@
-<link rel="preload" href="{{ 'wizzyCustom.css' | asset_url }}" as="style" fetchpriority="low">
-<link rel="preload" href="{{ 'component-quick-view.css' | asset_url }}" as="style" fetchpriority="low">
+{% comment %} <link rel="preload" href="{{ 'wizzyCustom.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
+{% comment %} <link rel="preload" href="{{ 'component-quick-view.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
 
-{{ 'wizzyCustom.css' | asset_url | stylesheet_tag }}
-{{ 'component-quick-view.css' | asset_url | stylesheet_tag }}
-{% comment %}
-  {{ 'wizzy-quick-view.css' | asset_url | stylesheet_tag }}
-{% endcomment %}
+{% unless template.name == 'product' %}
+  {{ 'wizzyCustom.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'component-quick-view.css' | asset_url | stylesheet_tag: preload: true }}
+{% endunless %}
+{% comment %} {{ 'component-quick-view.css' | asset_url | stylesheet_tag }} {% endcomment %}
+
+  {% comment %} {{ 'wizzy-quick-view.css' | asset_url | stylesheet_tag }} {% endcomment %}
+
+
+
+
+
+
+

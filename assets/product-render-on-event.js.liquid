@@ -1,10 +1,46 @@
+
 function loadScripts(e) {
-    setTimeout(function () {
+  setTimeout(function () {
     // loadScript("{{ '' | asset_url }}");
     // loadCSS("{{ '' | asset_url }}");
 
-  }, 10);
+    loadCSS("{{ 'component-card.css' | asset_url }}");
+    loadCSS("{{ 'component-cart-recommendations.css' | asset_url }}");
+    loadCSS("{{ 'component-menu-dropdown.css' | asset_url }}");
+    loadCSS("{{ 'component-predictive-search.css' | asset_url }}");
+    loadCSS("{{ 'mobile-size-card-product.css' | asset_url }}");
+    loadCSS("{{ 'section-footer.css' | asset_url }}");
+    loadCSS("{{ 'custom-footer.css' | asset_url }}");
+    loadCSS("{{ 'component-list-social.css' | asset_url }}");
+    loadCSS("{{ 'fontfaces.css' | asset_url }}");
+    loadCSS("{{ 'font-awesome.min.css' | asset_url }}");
+    loadCSS("{{ 'section-product-recommendations.css' | asset_url }}");
+    loadCSS("{{ 'wizzyCustom.css' | asset_url }}");
+    loadCSS("{{ 'component-quick-view.css' | asset_url }}");
+    loadCSS("{{ 'component-loading-overlay.css' | asset_url }}");
+    
 
+    
+    loadCSS("{{ 'component-discounts.css' | asset_url }}");
+    
+    // loadCSS("{{ 'component-accordion.css' | asset_url }}");
+    // loadCSS("{{ 'component-rte.css' | asset_url }}");
+    // loadCSS("{{ 'component-pickup-availability.css' | asset_url }}");
+    // loadCSS("{{ 'component-product-inventory.css' | asset_url }}");
+    // loadCSS("{{ 'component-product-grid.css' | asset_url }}");
+    // loadCSS("{{ 'section-mobile-dock.css' | asset_url }}");
+    // loadCSS("{{ 'component-list-payment.css' | asset_url }}");
+    // loadCSS("{{ 'component-product-review.css' | asset_url }}");
+    // loadCSS("{{ 'component-product-grid.css' | asset_url }}");
+    // loadCSS("{{ 'disclosure.css' | asset_url }}");
+    // loadCSS("{{ 'component-list-menu.css' | asset_url }}");
+    // loadCSS("{{ 'component-sticky-header.css' | asset_url }}");
+    // loadCSS("{{ 'component-color-swatches.css' | asset_url }}");
+    // loadCSS("{{ 'component-rating.css' | asset_url }}");
+    // loadCSS("{{ 'component-newsletter.css' | asset_url }}");
+    // loadCSS("{{ 'component-deferred-media.css' | asset_url }}");
+
+  }, 10);
 
   // Remove event listeners after scripts are loaded
   document.removeEventListener('click', loadScripts);

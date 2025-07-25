@@ -118,25 +118,33 @@
   }
 </style>
 
-<link rel="stylesheet" href="{{ 'component-sticky-header.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
- {% comment %} <link href="{{ 'custom-header.css' | asset_url }}" rel="preload" as="style" fetchpriority="low"> {% endcomment %}
- {% comment %} {{ 'custom-header.css' | asset_url | stylesheet_tag }} {% endcomment %}
+<link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'component-sticky-header.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
+{% endunless %}
+{% comment %} <link href="{{ 'custom-header.css' | asset_url }}" rel="preload" as="style" fetchpriority="low"> {% endcomment %}
+{% comment %} {{ 'custom-header.css' | asset_url | stylesheet_tag }} {% endcomment %}
 {%- if settings.cart_drawer_enabled -%}
-<link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% unless template.name == 'product' %}
+    <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% endunless %}
 {%- endif -%}
 
 {%- if settings.predictive_search_enabled -%}
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="{{ 'component-loading-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% unless template.name == 'product' %}
+    <link rel="stylesheet" href="{{ 'component-loading-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% endunless %}
 {%- endif -%}
 
 {%- if enable_dropdown_menu -%}
-  <link rel="stylesheet" href="{{ 'component-menu-dropdown.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% unless template.name == 'product' %}
+    <link rel="stylesheet" href="{{ 'component-menu-dropdown.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% endunless %}
   <script src="{{ 'menu-dropdown.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
@@ -155,7 +163,9 @@
 <script src="{{ 'search-modal.js' | asset_url }}" defer="defer"></script>
 {%- if settings.cart_recommendations_enabled -%}
   <script src="{{ 'cart-recommendations.js' | asset_url }}" defer="defer"></script>
-  <link rel="stylesheet" href="{{ 'component-cart-recommendations.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% unless template.name == 'product' %}
+    <link rel="stylesheet" href="{{ 'component-cart-recommendations.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% endunless %}
 {%- endif -%}
 
 <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
