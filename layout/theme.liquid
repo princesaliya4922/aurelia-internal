@@ -7,234 +7,86 @@
     dir="rtl"
   {% endif -%}
 >
-  
   <head>
+    {% comment %} Critical Meta Tags {% endcomment %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
     <meta name="google-site-verification" content="7VAw5_qKHiqi3G0cz3cTKqqcTJya2qfuJeNUtc9FbhQ">
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
-    {%- endif -%}
-     {%- if request.path contains '/404' -%}
+
+    {% comment %} 404 Redirect {% endcomment %}
+    {%- if request.path contains '/404' -%}
       <meta http-equiv="refresh" content="0; url=https://shopforaurelia.com/">
     {%- endif -%}
 
-     {% if request.path contains '/products/' %}
-      <title>Buy {{ product.title }} Online for Woman | Shop for Aurelia</title>
-      <meta name="description" content="Shop {{ product.title }} online for woman from our best collections at Aurelia for all occasions. Check out our prices, offers, colors, fabrics, size charts.">
-    {% endif %}
-
-    {% render 'meta-tags' %}
-
-    <!-- Code for Canonical URL Tag -AK -->
-    {% render 'canonical_url' %}
-
-    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
-
-    
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {% comment %} SEO Meta Tags {% endcomment %}
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
     {%- endif -%}
 
-    
-     <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-    </title>
-
-    {% comment %} fontfaces {% endcomment %}
-    {{ 'fontfaces.css' | asset_url | stylesheet_tag: preload: true  }} 
-
-    {% if template.name == 'index' %}
-        <link
-          fetchpriority="high"
-          rel="preload"
-          href="/cdn/shop/files/eoss_mobile-Banner_copy.jpg?v=1749802819&width=1100"
-          as="image"
-        >
-  {% endif %}
-
-    {% comment %} {% if template contains 'product' %}
-      <link rel="preload" as="image" href="{{ product.featured_image | image_url: width: 1100 }}" fetchpriority="high">
-    {% endif %} {% endcomment %}
-
-    {% assign firstProduct = collection.products.first %}
-    {% if template.name == 'collection' %}
-      {% if firstProduct and firstProduct.available %}
-        <link
-          rel="preload"
-          fetchpriority="high"
-          href="{{ firstProduct.featured_image | img_url: 'master' }}"
-          as="image"
-          alt="{{ collection.title | escape }}"
-          loading="eager"
-        >
-      {% endif %}
+    {% if request.path contains '/products/' %}
+      <title>
+        Buy
+        {{ product.title }}
+        Online for Woman | Shop for Aurelia
+      </title>
+      <meta
+        name="description"
+        content="Shop {{ product.title }} online for woman from our best collections at Aurelia for all occasions. Check out our prices, offers, colors, fabrics, size charts."
+      >
+    {% else %}
+      <title>
+        {{ page_title }}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      </title>
     {% endif %}
-    
 
-
-    <!-- Code for Robots Tag -AK -->
+    {% comment %} Canonical & Meta Tags {% endcomment %}
+    {% render 'meta-tags' %}
+    {% render 'canonical_url' %}
     {% render 'robots_tag' %}
-    {% comment %} <link rel="preload" href="{{ 'base.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
-    {% comment %} <link rel="preload" href="{{ 'mobile-size-card-product.css' | asset_url }}" as="style" fetchpriority="low"> {% endcomment %}
 
-     {% comment %} <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}"> {% endcomment %}
-     {% comment %} <link href="{{ 'slick.min.js' | asset_url }}" rel="preload" as="script"> {% endcomment %}
-     <link href="{{ 'custom.min.js' | asset_url }}" rel="preload" as="script">
-     <link href="{{ 'global.js' | asset_url }}" rel="preload" as="script">
+    {% comment %} Favicon {% endcomment %}
+    {% render 'favicon' %}
 
-    <script src="{{ 'jquery.min.js' | asset_url }}"></script>
-    {% comment %} {% if template.name != 'product' %} {% endcomment %}
-      <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}"></script>
-    {% comment %} {% endif %} {% endcomment %}
-    
+    {% comment %} DNS Prefetch & Preconnect {% endcomment %}
+    {% render 'dns-prefetches' %}
 
-    <script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer="defer"></script>
-    <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    {% comment %} Critical Font Preloads {% endcomment %}
+    {% render 'font-preloads' %}
 
-    <script src="{{ 'custom.min.js' | asset_url }}"></script>
-    {% if template == 'product' %}
-      <script src="{{ 'pincode-js.js' | asset_url }}" defer="defer"></script>
-    {% endif %}
+    {% comment %} Critical Image Preloads {% endcomment %}
+    {% render 'image-preloads' %}
+
+    {% comment %} Critical assets {% endcomment %}
+    {% render 'core-assets' %}
+
+    {% render 'theme-css' %}
+
+    {% render 'theme-scripts' %}
+
+    {% comment %} Shopify Content {% endcomment %}
     {{ content_for_header }}
 
+    {% comment %} CSS Variables & JS Variables {% endcomment %}
     {% render 'css-variables' %}
-    {{ 'base.css' | asset_url | stylesheet_tag: preload: true  }} 
-    {% comment %} {{ 'mobile-size-card-product.css' | asset_url | stylesheet_tag: preload: true  }}  {% endcomment %}
-    <link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
-    {% if text_direction == 'rtl' %}
-      {{ 'rtl.css' | asset_url | stylesheet_tag: preload: true  }} 
-    {% endif %}
-
-    {% if template.name != 'product' %}
-      <link href="{{ 'font-awesome.min.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
-      {{ 'font-awesome.min.css' | asset_url | stylesheet_tag }}
-    {% endif %}
-
-    {%- unless settings.type_body_font.system? -%}
-      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-    {%- endunless -%}
-    <link href="{{ 'custom.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
-    {% if template.name != 'product' %}
-      <link href="{{ 'slick.css' | asset_url }}" rel="preload" as="style" fetchpriority="low">
-    {% endif %}
-  
-    {%- if settings.predictive_search_enabled -%}
-      <link
-        rel="stylesheet"
-        href="{{ 'component-predictive-search.css' | asset_url }}"
-        media="print"
-        onload="this.media='all'"
-      >
-    {%- endif -%}
-    {%- if settings.quick_view_enabled -%}
-      <link
-        rel="stylesheet"
-        href="{{ 'component-quick-view.css' | asset_url }}"
-        media="print"
-        onload="this.media='all'"
-      >
-    {%- endif -%}
-    {%- if settings.color_swatches_enabled -%}
-      <link
-        rel="stylesheet"
-        href="{{ 'component-color-swatches.css' | asset_url }}"
-        media="print"
-        onload="this.media='all'"
-      >
-    {%- endif -%}
-    {%- if linklists['gift-wrapping'].links != blank
-      and linklists['gift-wrapping'].links.first.type == 'product_link'
-    -%}
-      <link
-        rel="stylesheet"
-        href="{{ 'component-gift-wrapping.css' | asset_url }}"
-        media="print"
-        onload="this.media='all'"
-      >
-      <noscript>{{ 'component-gift-wrapping.css' | asset_url | stylesheet_tag }}</noscript>
-    {%- endif -%}
-    {{ 'custom.css' | asset_url | stylesheet_tag: preload: true }}
-    {% comment %} {% if template.name != 'product' %} {% endcomment %}
-    {{ 'slick.css' | asset_url | stylesheet_tag: preload: true }}
-    {% comment %} {% endif %} {% endcomment %}
-    {% render 'aurelia-india-section' %}  
     {%- render 'js-variables' -%}
-    {% if page.handle == 'career' %}
-      <style>
-         .csmt-main-image .page-width--inner {
-         padding:0px !important;
-        }
-      </style>
-    {% endif %}
-    {%- if request.path contains '/404' -%}
-      <script>
-        window.location.href="https://shopforaurelia.com/";
-      </script>
-    {%- endif -%}
- 
+    {% render 'aurelia-india-section' %}
 
-  {% render 'setup' %}  
+    {% comment %} Internal Styles {% endcomment %}
+    {% render 'internal-styles' %}
+
+    {% comment %} Redirect {% endcomment %}
+    {% render 'redirects' %}
+
+    {% comment %} Third-party Script {% endcomment %}
     {% include 'sr-checkout' %}
 
-<!----------admitad tagging-------->
-<script src='https://www.artfut.com/static/tagtag.min.js?campaign_code=6187bdd148' defer></script>
-
-<script type='text/javascript'>
-// name of the cookie that stores the source
-// change if you have another name
-var cookie_name = 'deduplication_cookie';
-// cookie lifetime
-var days_to_store = 30;
-// expected deduplication_cookie value for Admitad
-var deduplication_cookie_value = 'admitad';
-// name of GET parameter for deduplication
-// change if you have another name
-var channel_name = 'utm_source';
-// a function to get the source from the GET parameter
-getSourceParamFromUri = function() {
-   var pattern = channel_name + '=([^&]+)';
-   var re = new RegExp(pattern);
-   return (re.exec(document.location.search) || [])[1] || '';
-};
-// a function to get the source from the cookie named cookie_name
-getSourceCookie = function() {
-   var matches = document.cookie.match(new RegExp(
-       '(?:^|; )' + cookie_name.replace(/([\.$?*|{}\(\)\[\]\\/\+^])/g, '\$1') + '=([^;]*)'
-   ));
-   return matches ? decodeURIComponent(matches[1]) : undefined;
-};
-// a function to set the source in the cookie named cookie_name
-setSourceCookie = function () {
-  var param = getSourceParamFromUri();
-  var params = (new URL(document.location)).searchParams;
-  if (!params.get(channel_name) && params.get('gclid')) { param = 'google' }
-  else if (!params.get(channel_name) && params.get('fbclid')) { param = 'facebook' }
-  else if (!params.get(channel_name) && params.get('cjevent')) { param = 'cj' }
-  else if (!param) { return; }
-  var period = days_to_store * 60 * 60 * 24 * 1000; // in seconds
-  var expiresDate = new Date((period) + +new Date);
-  var cookieString = cookie_name + '=' + param + '; path=/; expires=' + expiresDate.toGMTString();
-  document.cookie = cookieString;
-  document.cookie = cookieString + '; domain=.' + location.host;
-};
-// set cookie
-setSourceCookie();
-</script>
-<!----------end admitad tagging-------->
-    
+    {% comment %} Admitad Tracking {% endcomment %}
+    {% render 'admitad-tracking' %}
   </head>
 
   <body
@@ -258,12 +110,20 @@ setSourceCookie();
       data-button-round
     {% endif -%}
   >
-    <a class="skip-to-content-link button button--small visually-hidden" href="#MainContent">
-      {{ 'accessibility.skip_to_text' | t }}
-    </a>
+    {% comment %} Accessibility Skip Link {% endcomment %}
+    {% render 'accessibility-skip-link' %}
+
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-M7WLTK8"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
 
     {% render 'transition-cover' %}
-  
+
     <div class="transition-body">
       {% sections 'header-group' %}
 
@@ -281,83 +141,28 @@ setSourceCookie();
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
     </ul>
-    <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-      <symbol id="icon-cart" fill="none" viewbox="0 0 18 19">
-        <path d="M3.09333 5.87954L16.2853 5.87945V5.87945C16.3948 5.8795 16.4836 5.96831 16.4836 6.07785V11.4909C16.4836 11.974 16.1363 12.389 15.6603 12.4714C11.3279 13.2209 9.49656 13.2033 5.25251 13.9258C4.68216 14.0229 4.14294 13.6285 4.0774 13.0537C3.77443 10.3963 2.99795 3.58502 2.88887 2.62142C2.75288 1.42015 0.905376 1.51528 0.283581 1.51478" stroke="currentColor"/>
-        <path d="M13.3143 16.8554C13.3143 17.6005 13.9183 18.2045 14.6634 18.2045C15.4085 18.2045 16.0125 17.6005 16.0125 16.8554C16.0125 16.1104 15.4085 15.5063 14.6634 15.5063C13.9183 15.5063 13.3143 16.1104 13.3143 16.8554Z" fill="currentColor"/>
-        <path d="M3.72831 16.8554C3.72831 17.6005 4.33233 18.2045 5.07741 18.2045C5.8225 18.2045 6.42651 17.6005 6.42651 16.8554C6.42651 16.1104 5.8225 15.5063 5.07741 15.5063C4.33233 15.5063 3.72831 16.1104 3.72831 16.8554Z" fill="currentColor"/>
-      </symbol>
-    </svg>
 
-    {%- if settings.image_loading_bar_enabled %}
-      <script src="{{ 'lazyimage.js' | asset_url }}" async></script>
-    {% endif -%}
-    {%- if settings.predictive_search_enabled -%}
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-    {%- if settings.quick_view_enabled -%}
-      <script src="{{ 'quick-view.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-    {%- if settings.color_swatches_enabled -%}
-      <script src="{{ 'color-swatches.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-    {%- if linklists['gift-wrapping'].links != blank
-      and linklists['gift-wrapping'].links.first.type == 'product_link'
-    -%}
-      <script src="{{ 'gift-wrapping.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-   
+    {% render 'icon-cart' %}
+
     {% section 'scrollup' %}
     {% render 'otp-login' %}
     {% render 'new-font' %}
     {% render 'cartpage-coupon-popup' %}
-    
+
     {% if template contains 'collection' %}
       {% render 'similar-pop-up' %}
     {% endif %}
-    {% render 'mobile-size-card-product' %} 
-    
-    {% comment %} Render on js {% endcomment %}
-    {% if template.name == 'product' %}
+    {% render 'mobile-size-card-product' %}
 
-      <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
-      <link rel="stylesheet" href="{{ 'custom-header.css' | asset_url }}" media="print" onload="this.onload=null;this.media='all';">
+    {% comment %} Custom Scripts {% endcomment %}
+    {% render 'custom-scripts' %}
 
-      {% render 'product-render-js-asset' %}
-    {% endif %}
+    {% comment %} Custom CSS {% endcomment %}
+    {% render 'custom-css' %}
 
-    <script src='https://static-cdn.trackier.com/js/trackier-web-sdk.js' defer></script>
-    <script>window.TrackierWebSDK.init();</script>
-    <script src="https://static-cdn.trackier.com/rtg/661e5de63e77177bd6021cf6.js" defer></script>
-    <script src="https://static-cdn.trackier.com/js/trackier-web-sdk.js" defer></script>
-    <script src="https://static-cdn.trackier.com/rtg/6620c814a5c02d3a636d4325.js" defer></script>
-   <!-- Google Tag Manager -->
-    <script>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-M7WLTK8');
-    </script>
-    <!-- End Google Tag Manager -->
-            <!-- CustomerLabs Tag -->
-    <script>
-      !function(t,e,r,c,a,n,s){t.ClAnalyticsObject=a,t[a]=t[a]||[],t[a].methods=["trackSubmit","trackClick","pageview","identify","track", "trackConsent"],t[a].factory=function(e){return function(){var r=Array.prototype.slice.call(arguments);return r.unshift(e),t[a].push(r),t[a]}};for(var i=0;i<t[a].methods.length;i++){var o=t[a].methods[i];t[a][o]=t[a].factory(o)};n=e.createElement(r),s=e.getElementsByTagName(r)[0],n.async=1,n.crossOrigin="anonymous",n.src=c,s.parentNode.insertBefore(n,s)}(window,document,"script","https://cdn.js.customerlabs.co/cl4306h9vtyzar.js","_cl");_cl.SNIPPET_VERSION="2.0.0"
-    </script>
-    <!-- End of CustomerLabs Tag -->
- 
-<!------ Microsoft clarity --------->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "j0lrxi4ryv");
-</script>
-<!------- end clarity ------------>        
+    {% render 'third-party-tracking' %}
 
     {% render 'wizzy.search.filters.scripts' %}
     {% render 'wizzy.search.filters.styles' %}
-          
   </body>
 </html>

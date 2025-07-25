@@ -1,0 +1,21 @@
+{% if template.name == 'index' %}
+  <link
+    fetchpriority="high"
+    rel="preload"
+    href="/cdn/shop/files/eoss_mobile-Banner_copy.jpg?v=1749802819&width=1100"
+    as="image"
+  >
+{% endif %}
+
+{% if template.name == 'collection' %}
+  {% assign first_product = collection.products.first %}
+  {% if first_product and first_product.available %}
+    <link
+      rel="preload"
+      fetchpriority="high"
+      href="{{ first_product.featured_image | img_url: 'master' }}"
+      as="image"
+      alt="{{ collection.title | escape }}"
+    >
+  {% endif %}
+{% endif %}

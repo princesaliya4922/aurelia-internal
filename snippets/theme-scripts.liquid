@@ -1,0 +1,17 @@
+{% if template.name == 'product' %}
+  <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+{% else %}
+  <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+{% endif %}
+
+<script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}" defer></script>
+
+<script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer></script>
+<script src="{{ 'pubsub.js' | asset_url }}" defer></script>
+<script src="{{ 'global.js' | asset_url }}" defer></script>
+
+<script src="{{ 'custom.min.js' | asset_url }}" defer></script>
+
+{% if template == 'product' %}
+  <script src="{{ 'pincode-js.js' | asset_url }}" defer></script>
+{% endif %}

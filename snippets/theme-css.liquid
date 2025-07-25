@@ -1,0 +1,70 @@
+{% comment %} Font Faces {% endcomment %}
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}"></noscript>
+{% endunless %}
+
+{% comment %} Mobile Size Card Product {% endcomment %}
+<link
+  rel="stylesheet"
+  href="{{ 'mobile-size-card-product.css' | asset_url }}"
+  media="print"
+  onload="this.media='all'"
+>
+<noscript><link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}"></noscript>
+
+{% comment %} Font Awesome, Slick CSS {% endcomment %}
+{% if template.name != 'product' %}
+  <link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}"></noscript>
+
+  <link rel="stylesheet" href="{{ 'slick.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'slick.css' | asset_url }}"></noscript>
+{% endif %}
+
+<link rel="stylesheet" href="{{ 'custom.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'custom.css' | asset_url }}"></noscript>
+
+{% comment %} Predictive Search {% endcomment %}
+{%- if settings.predictive_search_enabled -%}
+  <link
+    rel="stylesheet"
+    href="{{ 'component-predictive-search.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript><link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}"></noscript>
+{%- endif -%}
+
+{% comment %} Quick View {% endcomment %}
+{%- if settings.quick_view_enabled -%}
+  <link
+    rel="stylesheet"
+    href="{{ 'component-quick-view.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript><link rel="stylesheet" href="{{ 'component-quick-view.css' | asset_url }}"></noscript>
+{%- endif -%}
+
+{% comment %} Color Swatches {% endcomment %}
+{%- if settings.color_swatches_enabled -%}
+  <link
+    rel="stylesheet"
+    href="{{ 'component-color-swatches.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript><link rel="stylesheet" href="{{ 'component-color-swatches.css' | asset_url }}"></noscript>
+{%- endif -%}
+
+{% comment %} Gift Wrapping {% endcomment %}
+{%- if linklists['gift-wrapping'].links != blank and linklists['gift-wrapping'].links.first.type == 'product_link' -%}
+  <link
+    rel="stylesheet"
+    href="{{ 'component-gift-wrapping.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript><link rel="stylesheet" href="{{ 'component-gift-wrapping.css' | asset_url }}"></noscript>
+{%- endif -%}
