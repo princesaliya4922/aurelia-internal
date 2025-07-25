@@ -111,12 +111,12 @@
       {% endif %}
     >
     <img
-      class="lazyload-image"
       {% if position == 1 %}
         src="{{ media.preview_image | image_url: width: 1100 }}"
         loading="eager"
         fetchpriority="high"
       {% else %}
+        class="lazyload-image"
         src="{{ media.preview_image | image_url: width: 20 }}"
         data-src="{{ media.preview_image | image_url: width: 1100 }}"
         loading="lazy"
