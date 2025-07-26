@@ -1,15 +1,15 @@
-<!-- ------ /section/main-product.liquid ------- -->
-{% comment %}theme-check-disable TemplateLength{% endcomment %}
-{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
-{{ 'component-accordion.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-rte.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-<link href="{{ 'component-rating.css' | asset_url }}" rel="preload" as="style">
-{{ 'component-rating.css' | asset_url | stylesheet_tag }}
-{{ 'custom-product.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-product-review.css' | asset_url }}" media="print" onload="this.media='all'">
+{% render 'lazy-css', filename: 'section-main-product.css', loading: 'preload' %}
+
+{% render 'lazy-css', filename: 'component-slider.css', loading: 'low' %}
+{% render 'lazy-css', filename: 'custom-product.css', loading: 'preload' %}
+
+{% render 'lazy-css', filename: 'component-accordion.css', loading: 'lazy' %}
+{% render 'lazy-css', filename: 'component-price.css', loading: 'lazy' %}
+{% render 'lazy-css', filename: 'component-rte.css', loading: 'lazy' %}
+{% render 'lazy-css', filename: 'component-rating.css', loading: 'lazy' %}
+
+{% render 'lazy-css', filename: 'component-deferred-media.css', loading: 'lazy' %}
+{% render 'lazy-css', filename: 'component-product-review.css', loading: 'lazy' %}
 
 {%- style -%}
   #shopify-section-{{ section.id }} {
@@ -68,12 +68,14 @@
   >
 {%- endif -%}
 {% if section.settings.enable_product_offer_strip %}
-<div class="pdp-offer-detail fixed-strip"><span class="strip_msg">{{ section.settings.msg_product_offer_strip }}</span></div>
+  <div class="pdp-offer-detail fixed-strip">
+    <span class="strip_msg">{{ section.settings.msg_product_offer_strip }}</span>
+  </div>
 {% endif %}
-  <div class="page-width page-bread">
- {% render 'breadcrumbs' %}
- </div>
-  <section class="page-width section--padding">
+<div class="page-width page-bread">
+  {% render 'breadcrumbs' %}
+</div>
+<section class="page-width section--padding">
   <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}{% if section.settings.gallery_layout == 'thumbnail_slider' and section.settings.show_thumbnails == false %} product--hide-thumbnails{% endif %}{% if section.settings.image_ratio == 'adapt' %} product--adapt{% endif %}{% if section.settings.mobile_image_ratio == 'adapt' %} product--mobile-adapt{% endif %}{% unless section.settings.enable_image_zoom %} product--zoom-disabled{% endunless %}">
     <product-recently-viewed data-product-id="{{ product.id }}" class="hidden"></product-recently-viewed>
     <div class="grid__item product__media-wrapper">
@@ -624,9 +626,9 @@
       >
         {%- for block in section.blocks -%}
           {%- case block.type -%}
-            <!-------- tabssss -------->
+              <!-- ------ tabssss ------ -->
             {%- when 'customTabs' -%}
-            {% render 'product-custom-tabs',product:product %}
+              {% render 'product-custom-tabs', product: product %}
             {%- when '@app' -%}
               {% render block %}
             {%- when 'text' -%}
@@ -646,21 +648,19 @@
                 </p>
               {%- endif -%}
             {%- when 'sku' -%}
-            
               <p
                 class="product__sku{% if block.settings.sku_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.sku_style == 'subtitle' %} subtitle{% endif %} font-bold-heading"
                 id="sku-{{ section.id }}"
                 {{ block.shopify_attributes }}
               >
-                <b>SKU:</b> 
-              {% comment %} {{- product.selected_or_first_available_variant.sku -}} {% endcomment %}
-                 {{ product.metafields.custom.sku.value }}
+                <b>SKU:</b>
+                {% comment %} {{- product.selected_or_first_available_variant.sku -}} {% endcomment %}
+                {{ product.metafields.custom.sku.value }}
               </p>
-            
 
             {% when 'offer' %}
-            {% render 'Pdp-info', product: product, block: block %}
-            
+              {% render 'Pdp-info', product: product, block: block %}
+
             {%- when 'title' -%}
               <div class="product__title" {{ block.shopify_attributes }}>
                 <h1 class="product__heading {{ block.settings.title_size }} font-bold-heading">
@@ -749,7 +749,7 @@
                 </details>
               </accordion-tab>
             {%- when 'collapsible_tab' -%}
-            {% assign title__product = block.settings.heading |handle  %}
+              {% assign title__product = block.settings.heading | handle %}
               {%- if block.settings.content != blank
                 or block.settings.page.content != blank
                 or block.settings.custom_liquid != blank
@@ -862,9 +862,9 @@
                   </li>
                 {%- endif -%}
               </ul>
-              {%- when 'variant_picker' -%}
-               {% render 'product-varient', product: product %}  
-            
+            {%- when 'variant_picker' -%}
+              {% render 'product-varient', product: product %}
+
               {{ 'component-product-inventory.css' | asset_url | stylesheet_tag }}
             {%- when 'variant_picker' -%}
               {% render 'product-variant-picker', block: block, product: product %}
@@ -1025,54 +1025,63 @@
 
             {%- when 'pincode' -%}
               <script>
-                window.pincodes = '{{ block.settings.description_1 }}'
+                window.pincodes = '{{ block.settings.description_1 }}';
               </script>
               {% assign tags = block.settings.description_1 | split: ',' %}
-            
-               <p class="delivery_check">CHECK DELIVERY IN YOUR AREA</p>
-                <div class="pincodeDiv font-bold-heading">
-                <input id="checkPin" type="text" placeholder="Enter Pincode" maxlength="6" pattern="[1-9][0-9]{5}" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" fdprocessedid="xjonsa">
+
+              <p class="delivery_check">CHECK DELIVERY IN YOUR AREA</p>
+              <div class="pincodeDiv font-bold-heading">
+                <input
+                  id="checkPin"
+                  type="text"
+                  placeholder="Enter Pincode"
+                  maxlength="6"
+                  pattern="[1-9][0-9]{5}"
+                  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                  fdprocessedid="xjonsa"
+                >
               </div>
               <p class="checkStatus font-bold-heading"></p>
               <p class="checkout_error font-bold-heading"></p>
-              <!-- <div class="pincode_container">
-                <label for="fname"></label>
-                <input type="text" id="pincode_1" name="pincode" placeholder="Enter Pincode" maxLength="6">
-              </div>
-              <div class="loader">
-                <svg
-                  version="1.1"
-                  id="L9"
-                  width="30px"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 100 100"
-                  enable-background="new 0 0 0 0"
-                  xml:space="preserve"
-                >
-                    <path fill="#000" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                      <animateTransform
-                         attributeName="transform"
-                         attributeType="XML"
-                         type="rotate"
-                         dur="1s"
-                         from="0 50 50"
-                         to="360 50 50"
-                         repeatCount="indefinite" />
-                  </path>
-                </svg>
-              </div>
-              <p class="responsemessage" id="responsemessage"></p>
- -->
+              <!--
+                <div class="pincode_container">
+                  <label for="fname"></label>
+                  <input type="text" id="pincode_1" name="pincode" placeholder="Enter Pincode" maxLength="6">
+                </div>
+                <div class="loader">
+                  <svg
+                    version="1.1"
+                    id="L9"
+                    width="30px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 100 100"
+                    enable-background="new 0 0 0 0"
+                    xml:space="preserve"
+                  >
+                      <path fill="#000" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                        <animateTransform
+                           attributeName="transform"
+                           attributeType="XML"
+                           type="rotate"
+                           dur="1s"
+                           from="0 50 50"
+                           to="360 50 50"
+                           repeatCount="indefinite" />
+                    </path>
+                  </svg>
+                </div>
+                <p class="responsemessage" id="responsemessage"></p>
+              -->
               {% comment %}
-                <p class="pincode_validation_1 line_height" text="*Free Delivery on orders above"></p>
-                <p class="pincode_validation_2 line_height" text="This picode in not available"></p>
-              
-            
-              <p class="shipping_pin line_height">*Standard delivery date is 7-10 working days.</p>
-                {% endcomment %}
+                  <p class="pincode_validation_1 line_height" text="*Free Delivery on orders above"></p>
+                  <p class="pincode_validation_2 line_height" text="This picode in not available"></p>
+
+
+                <p class="shipping_pin line_height">*Standard delivery date is 7-10 working days.</p>
+              {% endcomment %}
               {% comment %} end Pincode validation by ritu {% endcomment %}
 
             {%- when 'breadcrumb' -%}
@@ -1272,62 +1281,107 @@
         >
           <span class="icon icon-plus-alt"></span>
         </button>
-  
+
         <div class="product-popup-modal__content-info">
           <div class="h2">{{ block.settings.page.title }}</div>
           <div class="rte">{{ block.settings.page.content }}</div>
           <div class="main_guide">
-             <div class="size_guidename">
+            <div class="size_guidename">
               <h4 class="modal-title font-bold" style="margin:0;">SIZE GUIDE</h4>
-                <div class="in_cm_guide">
-                   <span class="size_name in_size_table{% if forloop.first %} active {% endif %}">IN</span>
-                   <span class="size_name cm_size_table">CM</span>
-                </div>
-          </div>
-
-    {% if product.type contains 'Straight Kurta' or  product.type contains 'Kurtas' or  product.type contains 'A-Line Kurta' 
-                  or product.type contains 'Sets & Dresses' or product.type contains 'Kurta Sets' or product.type contains 'Gowns & Dresses'
-                  or product.type contains 'Flared Kurta' or product.type contains 'Dresses' or product.type contains 'Winter Kurtas'
-                  or product.type contains 'Winterwear kurtas' or product.type contains 'Jumpsuits' or product.type contains 'Jacket & Gillet Set'
-                  or product.type contains 'Jacket Set' or product.type contains 'Jacket & Gillet' or product.type contains 'Top Wear'
-                  or product.type contains 'Tops' or product.type contains 'Tunics' or product.type contains 'Shirts'
-                  or product.type contains 'Skirt Sets' or product.title contains 'Kurta' or product.title contains 'Kurti'
-                  or product.title contains 'Dress' or product.title contains 'kurta'
-                 %}
-                  <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/kurtasizeimg.webp?v=1713441725" width="" height="">
-                    <div class="size-guide_box center">
-                        <div class="size-guide-con-measure center">
-                            <button class="active" id="productBody">Garment Measurement</button>
-                        </div>
-                    </div>
-                   {% elsif product.title contains 'Dupatta' or product.title contains 'Shawl' or product.title contains 'drape' %}
-                    <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/dupattasizeimg.webp?v=1713441859" width="" height="">
-                     <div class="size-guide_box center">
-                         <div class="size-guide-con-measure center">
-                           <button id="productBody" class="active center">Garment Measurement</button>
-                         </div>
-                     </div>
-                  {% elsif  
-                    product.title contains 'jeggings' or product.title contains 'tights' or product.title contains 'palazzo'
-                    or product.title contains 'pants' or product.title contains 'churidar' or product.title contains 'trousers'    
-                    or product.title contains 'culottes'
-                    or product.title contains 'Jeggings' or product.title contains 'Tights' or product.title contains 'Palazzo'
-                    or product.title contains 'Pants' or product.title contains 'Churidar' or product.title contains 'Trousers'
-                    or product.title contains 'Culottes'
-                 %}  
-                  <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/bottomsizeimg.webp?v=1713441833" width="" height="">
-                   <div class="size-guide_box center">
-                  <div class="size-guide-con-measure center">
-                      <button class="active center" id="productBody">Garment Measurement</button>
-                  </div>
+              <div class="in_cm_guide">
+                <span class="size_name in_size_table{% if forloop.first %} active {% endif %}">IN</span>
+                <span class="size_name cm_size_table">CM</span>
               </div>
-              {% elsif product.type contains 'Flats' or  product.type contains 'Heels' or product.type contains 'Wedges' %}  
-                  <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/1597395064Heels1-01.webp?v=1718092914" width="" height="">
-                  
-             {% endif %}
-                <div class="guide_table">{{ product.metafields.custom.size_guide_table.value }}</div>
-                <p style="font-size:14px; text-align: center;">These measurements are indicative. Actual Size may differ.</p>
-            
+            </div>
+
+            {% if product.type contains 'Straight Kurta'
+              or product.type contains 'Kurtas'
+              or product.type contains 'A-Line Kurta'
+              or product.type contains 'Sets & Dresses'
+              or product.type contains 'Kurta Sets'
+              or product.type contains 'Gowns & Dresses'
+              or product.type contains 'Flared Kurta'
+              or product.type contains 'Dresses'
+              or product.type contains 'Winter Kurtas'
+              or product.type contains 'Winterwear kurtas'
+              or product.type contains 'Jumpsuits'
+              or product.type contains 'Jacket & Gillet Set'
+              or product.type contains 'Jacket Set'
+              or product.type contains 'Jacket & Gillet'
+              or product.type contains 'Top Wear'
+              or product.type contains 'Tops'
+              or product.type contains 'Tunics'
+              or product.type contains 'Shirts'
+              or product.type contains 'Skirt Sets'
+              or product.title contains 'Kurta'
+              or product.title contains 'Kurti'
+              or product.title contains 'Dress'
+              or product.title contains 'kurta'
+            %}
+              <img
+                loading="lazy"
+                src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/kurtasizeimg.webp?v=1713441725"
+                width=""
+                height=""
+              >
+              <div class="size-guide_box center">
+                <div class="size-guide-con-measure center">
+                  <button class="active" id="productBody">Garment Measurement</button>
+                </div>
+              </div>
+            {% elsif product.title contains 'Dupatta'
+              or product.title contains 'Shawl'
+              or product.title contains 'drape'
+            %}
+              <img
+                loading="lazy"
+                src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/dupattasizeimg.webp?v=1713441859"
+                width=""
+                height=""
+              >
+              <div class="size-guide_box center">
+                <div class="size-guide-con-measure center">
+                  <button id="productBody" class="active center">Garment Measurement</button>
+                </div>
+              </div>
+            {% elsif product.title contains 'jeggings'
+              or product.title contains 'tights'
+              or product.title contains 'palazzo'
+              or product.title contains 'pants'
+              or product.title contains 'churidar'
+              or product.title contains 'trousers'
+              or product.title contains 'culottes'
+              or product.title contains 'Jeggings'
+              or product.title contains 'Tights'
+              or product.title contains 'Palazzo'
+              or product.title contains 'Pants'
+              or product.title contains 'Churidar'
+              or product.title contains 'Trousers'
+              or product.title contains 'Culottes'
+            %}
+              <img
+                loading="lazy"
+                src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/bottomsizeimg.webp?v=1713441833"
+                width=""
+                height=""
+              >
+              <div class="size-guide_box center">
+                <div class="size-guide-con-measure center">
+                  <button class="active center" id="productBody">Garment Measurement</button>
+                </div>
+              </div>
+            {% elsif product.type contains 'Flats' or product.type contains 'Heels' or product.type contains 'Wedges' %}
+              <img
+                loading="lazy"
+                src="https://cdn.shopify.com/s/files/1/0776/0419/2550/files/1597395064Heels1-01.webp?v=1718092914"
+                width=""
+                height=""
+              >
+            {% endif %}
+            <div class="guide_table">{{ product.metafields.custom.size_guide_table.value }}</div>
+            <p style="font-size:14px; text-align: center;">
+              These measurements are indicative. Actual Size may differ.
+            </p>
           </div>
         </div>
       </div>
@@ -1360,77 +1414,83 @@
     </modal-dialog>
   {%- endif -%}
 
-{% comment %} sticky mobile atc & buy now btn {% endcomment %}
+  {% comment %} sticky mobile atc & buy now btn {% endcomment %}
 
   <product-form class="sticky-cart__form">
-            {%- assign sticky_cart_form_id = product_form_id | append: '--alt' -%}
-            {%- form 'product',
-              product,
-              id: sticky_cart_form_id,
-              novalidate: 'novalidate',
-              data-type: 'add-to-cart-form'
-            -%}
-              <input
-                type="hidden"
-                name="id"
-                value="{{ product.selected_or_first_available_variant.id }}"
-                disabled="disabled"
-              >
+    {%- assign sticky_cart_form_id = product_form_id | append: '--alt' -%}
+    {%- form 'product', product, id: sticky_cart_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+      <input
+        type="hidden"
+        name="id"
+        value="{{ product.selected_or_first_available_variant.id }}"
+        disabled="disabled"
+      >
 
-{% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
-        <input id="mrp__property" type="hidden" name="properties[Discount Amount]" value="{{ product.selected_or_first_available_variant.compare_at_price |minus:product.selected_or_first_available_variant.price |divided_by:100 }}">
-        <input id="mrp__property" type="hidden" name="properties[Discount Percentage]" value="{{ product.selected_or_first_available_variant.compare_at_price | minus:product.selected_or_first_available_variant.price | times: 100 | divided_by: product.selected_or_first_available_variant.compare_at_price }}%">
-{% endif %}
-    
-              <div class="product-form__buttons sticky_atc_buynow">
+      {% if product.selected_or_first_available_variant.compare_at_price
+          > product.selected_or_first_available_variant.price
+      %}
+        <input
+          id="mrp__property"
+          type="hidden"
+          name="properties[Discount Amount]"
+          value="{{ product.selected_or_first_available_variant.compare_at_price |minus:product.selected_or_first_available_variant.price |divided_by:100 }}"
+        >
+        <input
+          id="mrp__property"
+          type="hidden"
+          name="properties[Discount Percentage]"
+          value="{{ product.selected_or_first_available_variant.compare_at_price | minus:product.selected_or_first_available_variant.price | times: 100 | divided_by: product.selected_or_first_available_variant.compare_at_price }}%"
+        >
+      {% endif %}
 
-                <button
-                  type="submit"
-                  name="add"
-                  class="product-form__submit button button--small font-bold-heading"
-                  {%- if product.selected_or_first_available_variant.available == false %}
-                    disabled="disabled"
-                  {% endif -%}
-                  {%- if product.template_suffix == 'pre-order' %}
-                    data-pre-order="true"
-                  {% endif -%}
-                >
-                  {%- liquid
-                    if product.selected_or_first_available_variant.available
-                      if product.template_suffix != 'pre-order'
-                        echo 'products.product.add_to_cart' | t
-                      else
-                        echo 'products.product.pre_order' | t
-                      endif
-                    else
-                      echo 'products.product.sold_out' | t
-                    endif
-                  -%}
-                </button>
+      <div class="product-form__buttons sticky_atc_buynow">
+        <button
+          type="submit"
+          name="add"
+          class="product-form__submit button button--small font-bold-heading"
+          {%- if product.selected_or_first_available_variant.available == false %}
+            disabled="disabled"
+          {% endif -%}
+          {%- if product.template_suffix == 'pre-order' %}
+            data-pre-order="true"
+          {% endif -%}
+        >
+          {%- liquid
+            if product.selected_or_first_available_variant.available
+              if product.template_suffix != 'pre-order'
+                echo 'products.product.add_to_cart' | t
+              else
+                echo 'products.product.pre_order' | t
+              endif
+            else
+              echo 'products.product.sold_out' | t
+            endif
+          -%}
+        </button>
 
         <div style="display: none;">
-            {{ form | payment_button }}
-           </div>
-{%- unless product.selected_or_first_available_variant.available -%}
-                    <style>
-                      .sr-headless-checkout{
-                        opacity:0.5;
-                        cursor: not-allowed;
-                        pointer-events: none;
-                      }
-                    </style>
-                  {%- endunless -%}
-<input type="hidden" value="true" id="fastrrCollectionPage" />
-<input type="hidden" value={{ product.url }} name="productUrl" />
-                <div class="shiprocket-headless" data-type="product"></div>
-      
+          {{ form | payment_button }}
+        </div>
+        {%- unless product.selected_or_first_available_variant.available -%}
+          <style>
+            .sr-headless-checkout {
+              opacity: 0.5;
+              cursor: not-allowed;
+              pointer-events: none;
+            }
+          </style>
+        {%- endunless -%}
+        <input type="hidden" value="true" id="fastrrCollectionPage">
+        <input type="hidden" value="{{ product.url }}" name="productUrl">
+        <div class="shiprocket-headless" data-type="product"></div>
 
-        <!-- <button type="button" class="button buynow-btn" title="Buy" onClick="document.querySelector('.shopify-payment-button__button--unbranded').click()"><span>Buy now</span></button> -->
-              </div>
-            {%- endform -%}
-          </product-form>
-                      
-              
+        <!--
+          <button type="button" class="button buynow-btn" title="Buy" onClick="document.querySelector('.shopify-payment-button__button--unbranded').click()"><span>Buy now</span></button>
+        -->
+      </div>
+    {%- endform -%}
+  </product-form>
+
   {%- assign sticky_cart = section.blocks | where: 'type', 'sticky_cart' | first -%}
   {%- if sticky_cart -%}
     <link
@@ -1584,23 +1644,27 @@
 {%- endif -%}
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     function isIE() {
       const ua = window.navigator.userAgent;
       const msie = ua.indexOf('MSIE ');
       const trident = ua.indexOf('Trident/');
 
-      return (msie > 0 || trident > 0);
+      return msie > 0 || trident > 0;
     }
 
     if (!isIE()) return;
     const hiddenInput = document.querySelector('#{{ product_form_id }} input[name="id"]');
     const noScriptInputWrapper = document.createElement('div');
-    const variantSwitcher = document.querySelector('variant-radios[data-section="{{ section.id }}"]') || document.querySelector('variant-selects[data-section="{{ section.id }}"]');
-    noScriptInputWrapper.innerHTML = document.querySelector('.product-form__noscript-wrapper-{{ section.id }}').textContent;
+    const variantSwitcher =
+      document.querySelector('variant-radios[data-section="{{ section.id }}"]') ||
+      document.querySelector('variant-selects[data-section="{{ section.id }}"]');
+    noScriptInputWrapper.innerHTML = document.querySelector(
+      '.product-form__noscript-wrapper-{{ section.id }}'
+    ).textContent;
     variantSwitcher.outerHTML = noScriptInputWrapper.outerHTML;
 
-    document.querySelector('#Variants-{{ section.id }}').addEventListener('change', function(event) {
+    document.querySelector('#Variants-{{ section.id }}').addEventListener('change', function (event) {
       hiddenInput.value = event.currentTarget.value;
     });
   });
@@ -1623,47 +1687,47 @@
 -%}
 
 <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "ProductGroup",
+    "name": "{{ product.title }}",
+    "SKU" : "{{ product.metafields.custom.sku.value }}",
+    "description": "{{ product.description | strip_html | escape }}",
+    "url": "{{ product.url }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ product.vendor }}"
+    },
+    "productGroupID": "{{ product.id }}",
+    "variesBy": [
+      "https://schema.org/size"
+    ],
+    "hasVariant": [
+      {% for variant in product.variants %}
       {
-        "@context": "https://schema.org/",
-        "@type": "ProductGroup",
-        "name": "{{ product.title }}",
-        "SKU" : "{{ product.metafields.custom.sku.value }}",
-        "description": "{{ product.description | strip_html | escape }}",
-        "url": "{{ product.url }}",
-        "brand": {
-          "@type": "Brand",
-          "name": "{{ product.vendor }}"
-        },
-        "productGroupID": "{{ product.id }}",
-        "variesBy": [
-          "https://schema.org/size"
-        ],
-        "hasVariant": [
-          {% for variant in product.variants %}
-          {
-            "@type": "Product",
-            "sku": "{{ variant.sku }}",
+        "@type": "Product",
+        "sku": "{{ variant.sku }}",
 
-            {% if seo_media -%}
-            "image": [
-              {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
-              ],
-            {%- endif %}
-            "name": "{{ product.title }} - {{ variant.title }}",
-            "description": "{{ product.description | strip_html | escape }}",
-            "size": "{{ variant.title }}",
-            "offers": {
-              "@type": "Offer",
-              "availability" : "{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
-              "price" : {{ variant.price | divided_by: 100.00 | json }},
-              "priceCurrency" : {{ cart.currency.iso_code | json }},
-              "url" : {{ request.origin | append: variant.url | json }}
-            }
-          }{% unless forloop.last %},{% endunless %}
-          {% endfor %}
-        ]
-      }
-    </script>
+        {% if seo_media -%}
+        "image": [
+          {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+          ],
+        {%- endif %}
+        "name": "{{ product.title }} - {{ variant.title }}",
+        "description": "{{ product.description | strip_html | escape }}",
+        "size": "{{ variant.title }}",
+        "offers": {
+          "@type": "Offer",
+          "availability" : "{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : {{ variant.price | divided_by: 100.00 | json }},
+          "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "url" : {{ request.origin | append: variant.url | json }}
+        }
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+</script>
 
 {% schema %}
 {
@@ -1675,8 +1739,8 @@
       "type": "@app"
     },
     {
-      "type":"customTabs",
-      "name":"Custom Tabs"
+      "type": "customTabs",
+      "name": "Custom Tabs"
     },
     {
       "type": "pincode",
@@ -1993,13 +2057,13 @@
       ]
     },
     {
-      "type":"offer",
-      "name":"Offer",
-      "settings":[
+      "type": "offer",
+      "name": "Offer",
+      "settings": [
         {
-          "type":"image_picker",
-          "id":"offer_img",
-          "label":"Offer Image"
+          "type": "image_picker",
+          "id": "offer_img",
+          "label": "Offer Image"
         }
       ]
     },
@@ -3704,84 +3768,84 @@
 <style>
   .fancybox__container,
   .fancybox-slide--image,
-  .fancybox-container{
-    background:#fff;
+  .fancybox-container {
+    background: #fff;
   }
-  html.with-fancybox body.hide-scrollbar .section-header.shopify-section-group-header-group{
-    z-index:1;
+  html.with-fancybox body.hide-scrollbar .section-header.shopify-section-group-header-group {
+    z-index: 1;
   }
- html.with-fancybox body.hide-scrollbar [data-fancybox-toggle-slideshow],
- html.with-fancybox body.hide-scrollbar [data-fancybox-toggle-thumbs],
- html.with-fancybox body.hide-scrollbar .fancybox__toolbar__column.is-left,
- html.with-fancybox body.hide-scrollbar  .is-compact .fancybox__footer,
- html.with-fancybox body.hide-scrollbar  .fancybox__footer{
+  html.with-fancybox body.hide-scrollbar [data-fancybox-toggle-slideshow],
+  html.with-fancybox body.hide-scrollbar [data-fancybox-toggle-thumbs],
+  html.with-fancybox body.hide-scrollbar .fancybox__toolbar__column.is-left,
+  html.with-fancybox body.hide-scrollbar .is-compact .fancybox__footer,
+  html.with-fancybox body.hide-scrollbar .fancybox__footer {
     display: none;
-}
+  }
   button.fancybox-button.fancybox-close-small,
   button.fancybox-button.fancybox-button--thumbs,
-  .fancybox-infobar{
+  .fancybox-infobar {
     display: none;
-}
-.fancybox__track {
+  }
+  .fancybox__track {
     transform: matrix(1, 0, 0, 1, 0, 0) !important;
-}
-  .is-active [data-fancybox="mygallery"] {
+  }
+  .is-active [data-fancybox='mygallery'] {
     cursor: zoom-in;
-}
+  }
 </style>
-                        
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
 <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-              
- <script>                         
-jQuery( document ).ready( function ($) {
-   $("[data-fancybox]").fancybox({
-      afterShow: function( instance, current ) {
+
+<script>
+  jQuery(document).ready(function ($) {
+    $('[data-fancybox]').fancybox({
+      afterShow: function (instance, current) {
         $('.fancybox-button--zoom').click({
-          loop : false,
-          toolbar  : false,
-          smallBtn : false,
-          iframe : {
-            preload : false
-          }
+          loop: false,
+          toolbar: false,
+          smallBtn: false,
+          iframe: {
+            preload: false,
+          },
         });
-      }
+      },
     });
-   $(".fancybox-button--zoom").attr("data-fancybox","mygallery");
-    $(".fancybox-button--zoom").fancybox({
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'		:	600, 
-		'speedOut'		:	200, 
-		'overlayShow'	:	true,
-       'toolbar'  : true,
-       'smallBtn' : false
-	});
-})
+    $('.fancybox-button--zoom').attr('data-fancybox', 'mygallery');
+    $('.fancybox-button--zoom').fancybox({
+      transitionIn: 'elastic',
+      transitionOut: 'elastic',
+      speedIn: 600,
+      speedOut: 200,
+      overlayShow: true,
+      toolbar: true,
+      smallBtn: false,
+    });
+  });
 </script>
 
 <script>
-   const $table = $('.guide_table table');
-    const $rows = $table.find('tbody tr');
-     const $headerRow = $rows.first();     
-    const $dataRows = $rows.slice(1);     
-    const $headers = $headerRow.find('td');
-    $headers.each(function (index) {
-      let allEmpty = true;
-      $dataRows.each(function () {
-        const $cell = $(this).find('td').eq(index);
-        if ($cell.length && $cell.text().trim() !== '') {
-          allEmpty = false;
-          return false;
-        }
-      });
-      if (allEmpty) {
-        $(this).hide();
-        $dataRows.each(function () {
-          $(this).find('td').eq(index).hide();
-        });
+  const $table = $('.guide_table table');
+  const $rows = $table.find('tbody tr');
+  const $headerRow = $rows.first();
+  const $dataRows = $rows.slice(1);
+  const $headers = $headerRow.find('td');
+  $headers.each(function (index) {
+    let allEmpty = true;
+    $dataRows.each(function () {
+      const $cell = $(this).find('td').eq(index);
+      if ($cell.length && $cell.text().trim() !== '') {
+        allEmpty = false;
+        return false;
       }
     });
- </script>
+    if (allEmpty) {
+      $(this).hide();
+      $dataRows.each(function () {
+        $(this).find('td').eq(index).hide();
+      });
+    }
+  });
+</script>
 
 <script src="{{ 'pdp-images-lazyload.js' | asset_url }}" defer="defer"></script>

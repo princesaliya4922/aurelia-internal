@@ -1,0 +1,49 @@
+{%- comment -%}
+  Lazy CSS Loader Snippet
+  Usage: {% render 'lazy-css', filename: 'section-main-product.css', loading: 'preload' %}
+
+  Parameters:
+  - filename: CSS file name (required)
+  - loading: Loading strategy (optional, default: 'low')
+    - 'preload': High priority loading
+    - 'low': Async loading with print media trick (DEFAULT)
+    - 'lazy': Load on user interaction
+  - media: Media query (optional, default: 'all')
+{%- endcomment -%}
+
+{%- liquid
+  assign css_url = filename | asset_url
+  assign media_query = media | default: 'all'
+  assign loading_strategy = loading | default: 'low'
+-%}
+
+{%- case loading_strategy -%}
+  {%- when 'preload' -%}
+    {{ css_url | stylesheet_tag: preload: true }}
+
+  {%- when 'low' -%}
+    <link
+      rel="stylesheet"
+      href="{{ css_url }}"
+      media="print"
+      onload="this.onload=null;this.media='{{ media_query }}';"
+    >
+    <noscript><link rel="stylesheet" href="{{ css_url }}" media="{{ media_query }}"></noscript>
+
+  {%- when 'lazy' -%}
+    <script>
+      if (window.lazyAssets) {
+        window.lazyAssets.add('css', '{{ css_url }}');
+      } else {
+        document.addEventListener('DOMContentLoaded', function () {
+          if (window.lazyAssets) {
+            window.lazyAssets.add('css', '{{ css_url }}');
+          }
+        });
+      }
+    </script>
+    <noscript><link rel="stylesheet" href="{{ css_url }}" media="{{ media_query }}"></noscript>
+
+  {%- else -%}
+    <link rel="stylesheet" href="{{ css_url }}" media="{{ media_query }}">
+{%- endcase -%}

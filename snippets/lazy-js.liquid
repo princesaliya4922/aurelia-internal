@@ -1,0 +1,42 @@
+{%- comment -%}
+  Lazy JavaScript Loader Snippet
+  Usage: {% render 'lazy-js', filename: 'product-zoom.js', loading: 'defer' %}
+
+  Parameters:
+  - filename: JavaScript file name (required)
+  - loading: Loading strategy (optional, default: 'defer')
+    - 'async': Asynchronous loading (downloads in parallel, executes immediately)
+    - 'defer': Deferred loading (downloads in parallel, executes after DOM ready) (DEFAULT)
+    - 'lazy': Load on user interaction
+{%- endcomment -%}
+
+{%- liquid
+  assign js_url = filename | asset_url
+  assign loading_strategy = loading | default: 'defer'
+-%}
+
+{%- case loading_strategy -%}
+  {%- when 'async' -%}
+    <script src="{{ js_url }}" async></script>
+
+  {%- when 'defer' -%}
+    <script src="{{ js_url }}" defer></script>
+
+  {%- when 'lazy' -%}
+    <script>
+      window.lazyResources = window.lazyResources || {
+        scripts: [],
+        addScript: function (url, priority) {
+          this.scripts.push({ url: url, priority: priority });
+        },
+      };
+      window.lazyResources.addScript('{{ js_url }}', 'low');
+    </script>
+    <noscript>
+      <script src="{{ js_url }}"></script>
+    </noscript>
+
+  {%- else -%}
+    {%- comment -%} Fallback to standard blocking loading {%- endcomment -%}
+    <script src="{{ js_url }}"></script>
+{%- endcase -%}

@@ -9,24 +9,33 @@
   }
 {%- endstyle -%}
 
-<link href="{{ 'section-footer.css' | asset_url }}" rel="preload" as="style">
-{{ 'section-footer.css' | asset_url | stylesheet_tag }}
-<link href="{{ 'custom-footer.css' | asset_url }}" rel="preload" as="style">
-{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+{% if template.name != 'product' %}
+  <link href="{{ 'section-footer.css' | asset_url }}" rel="preload" as="style">
+  {{ 'section-footer.css' | asset_url | stylesheet_tag }}
+  <link href="{{ 'custom-footer.css' | asset_url }}" rel="preload" as="style">
+  {{ 'custom-footer.css' | asset_url | stylesheet_tag }}
 
-<link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-accordion.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-list-payment.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-list-social.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-accordion.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-list-payment.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-list-social.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'disclosure.css' | asset_url }}" media="print" onload="this.media='all'">
 
-<noscript>{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}</noscript>
-<noscript>{{ 'component-accordion.css' | asset_url | stylesheet_tag }}</noscript>
-<noscript>{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}</noscript>
-<noscript>{{ 'component-list-social.css' | asset_url | stylesheet_tag }}</noscript>
-<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
-<noscript>{{ 'disclosure.css' | asset_url | stylesheet_tag }}</noscript>
+  <noscript>{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}</noscript>
+  <noscript>{{ 'component-accordion.css' | asset_url | stylesheet_tag }}</noscript>
+  <noscript>{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}</noscript>
+  <noscript>{{ 'component-list-social.css' | asset_url | stylesheet_tag }}</noscript>
+  <noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+  <noscript>{{ 'disclosure.css' | asset_url | stylesheet_tag }}</noscript>
+{% else %}
+  {% render 'lazy-css', filename: 'section-footer.css', loading: 'lazy' %}
+  {% render 'lazy-css', filename: 'custom-footer.css', loading: 'lazy' %}
+
+  {% render 'lazy-css', filename: 'component-newsletter.css', loading: 'lazy' %}
+  {% render 'lazy-css', filename: 'component-list-payment.css', loading: 'lazy' %}
+  {% render 'lazy-css', filename: 'component-list-social.css', loading: 'lazy' %}
+{% endif %}
 
 <script src="{{ 'footer-accordion.js' | asset_url }}" defer="defer"></script>
 
@@ -66,7 +75,9 @@
                                 <a
                                   href="{{ link.url }}"
                                   class="link list-menu__item  list-menu__item--link{% if page.url == link.url %} list-menu__item--active{% endif %} font-medium"
-                                  {% if link.handle contains 'investor-relation' %} target="_blank" {% endif %}
+                                  {% if link.handle contains 'investor-relation' %}
+                                    target="_blank"
+                                  {% endif %}
                                 >
                                   {{ link.title }}
                                 </a>
@@ -231,7 +242,7 @@
         <span class="email__title">or call us at</span>
         <a target="_blank" href="tel:+91 7840041638">+91 7840041638</a>
         <span class="email__title"> or WhatsApp at</span>
-        <a href="https://api.whatsapp.com/send?phone=8448198618"target="_blank">+91-8448198618</a>
+        <a href="https://api.whatsapp.com/send?phone=8448198618" target="_blank">+91-8448198618</a>
         <span class="footer__text">(from 10 AM to 6 PM, Mon to Sun). We are closed on bank holidays.</span>
       </p>
     </div>
@@ -242,7 +253,7 @@
       <div class="footer__column footer__column--info">
         <div class="footer__copyright">
           <small class="copyright__content"
-            >&copy; Copyright  {{ 'now' | date: '%Y' }} Aurelia.
+            >&copy; Copyright {{ 'now' | date: '%Y' }} Aurelia.
             {{ section.settings.copyright_text -}}
           </small>
           <ul class="policies list-unstyled">
