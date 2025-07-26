@@ -1774,13 +1774,19 @@
 {% endschema %}
 
 <script>
-$(".menu_manage-order").click(function(e){
-  {% if customer %}
-    window.location.href = 'pages/tab-order';
-  {% else %}
-    e.preventDefault();
-    localStorage.setItem("manage-order", "manage-order");
-    $(".otp_overlay").show();
-  {% endif %}
-});
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('menu_manage-order')) {
+      {% if customer %}
+        window.location.href = 'pages/tab-order';
+      {% else %}
+        e.preventDefault();
+        localStorage.setItem("manage-order", "manage-order");
+        
+        const otpOverlay = document.querySelector('.otp_overlay');
+        if (otpOverlay) {
+          otpOverlay.style.display = 'block';
+        }
+      {% endif %}
+    }
+  });
 </script>

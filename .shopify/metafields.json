@@ -1,64 +1,103 @@
 {
   "article": [],
   "blog": [],
-  "collection": [],
+  "collection": [
+    {
+      "key": "grid_images",
+      "namespace": "custom",
+      "name": "Grid images",
+      "description": "",
+      "type": {
+        "name": "list.file_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "grid_image_url",
+      "namespace": "custom",
+      "name": "Grid image url",
+      "description": "",
+      "type": {
+        "name": "list.url",
+        "category": "URL"
+      }
+    },
+    {
+      "key": "grid_image_index_number",
+      "namespace": "custom",
+      "name": "Grid image index number",
+      "description": "",
+      "type": {
+        "name": "list.number_integer",
+        "category": "NUMBER"
+      }
+    },
+    {
+      "key": "mobile_grid_image",
+      "namespace": "custom",
+      "name": "Mobile Grid Image",
+      "description": "",
+      "type": {
+        "name": "list.file_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "mobile_grid_image_url",
+      "namespace": "custom",
+      "name": "Mobile Grid Image Url",
+      "description": "",
+      "type": {
+        "name": "list.url",
+        "category": "URL"
+      }
+    },
+    {
+      "key": "mobile_grid_image_index_number",
+      "namespace": "custom",
+      "name": "Mobile Grid Image Index Number",
+      "description": "",
+      "type": {
+        "name": "list.number_integer",
+        "category": "NUMBER"
+      }
+    },
+    {
+      "key": "popular_tags",
+      "namespace": "custom",
+      "name": "Popular Tags",
+      "description": "",
+      "type": {
+        "name": "rich_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "footer_description_collection",
+      "namespace": "custom",
+      "name": "Footer Description Collection",
+      "description": "",
+      "type": {
+        "name": "rich_text_field",
+        "category": "TEXT"
+      }
+    }
+  ],
   "company": [],
   "company_location": [],
   "location": [],
   "market": [],
-  "order": [
-    {
-      "key": "shipping",
-      "namespace": "elogistix",
-      "name": "Shipping by eLogistix",
-      "description": "",
-      "type": {
-        "name": "boolean",
-        "category": "TRUE_FALSE"
-      }
-    }
-  ],
-  "page": [
-    {
-      "key": "enable_before_after_slider",
-      "namespace": "custom",
-      "name": "Enable before after slider",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    }
-  ],
+  "order": [],
+  "page": [],
   "product": [
     {
-      "key": "custom_product",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Custom Product",
-      "description": "Use to indicate whether or not the unique product identifiers (UPIs) GTIN, MPN, and brand are available for your product.",
-      "type": {
-        "name": "boolean",
-        "category": "TRUE_FALSE"
-      }
-    },
-    {
-      "key": "product_weight",
+      "key": "manufacturing_meta",
       "namespace": "custom",
-      "name": "Weight",
+      "name": "Manufacturing__meta",
       "description": "",
       "type": {
-        "name": "single_line_text_field",
+        "name": "list.single_line_text_field",
         "category": "TEXT"
-      }
-    },
-    {
-      "key": "ratings",
-      "namespace": "custom",
-      "name": "Ratings",
-      "description": "",
-      "type": {
-        "name": "number_integer",
-        "category": "NUMBER"
       }
     },
     {
@@ -102,9 +141,19 @@
       }
     },
     {
-      "key": "supply_duration",
+      "key": "product_varient",
       "namespace": "custom",
-      "name": "Supply Duration",
+      "name": "product-varient",
+      "description": "",
+      "type": {
+        "name": "list.product_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "measurement_text",
+      "namespace": "custom",
+      "name": "Measurement text",
       "description": "",
       "type": {
         "name": "single_line_text_field",
@@ -112,29 +161,9 @@
       }
     },
     {
-      "key": "upsell_product",
+      "key": "sku",
       "namespace": "custom",
-      "name": "Upsell Product",
-      "description": "",
-      "type": {
-        "name": "product_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "free_app",
-      "namespace": "custom",
-      "name": "Free App",
-      "description": "",
-      "type": {
-        "name": "product_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "product_subtext",
-      "namespace": "custom",
-      "name": "Product Subtext",
+      "name": "sku",
       "description": "",
       "type": {
         "name": "single_line_text_field",
@@ -142,83 +171,423 @@
       }
     },
     {
-      "key": "product-certifications-standards",
+      "key": "fabric_process",
+      "namespace": "custom",
+      "name": "Fabric Process",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "material",
+      "namespace": "custom",
+      "name": "Material",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "bottom_sole_material",
+      "namespace": "custom",
+      "name": "Bottom/Sole Material",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "insole_material",
+      "namespace": "custom",
+      "name": "Insole Material",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "toe_shape",
+      "namespace": "custom",
+      "name": "Toe Shape",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "toe_type",
+      "namespace": "custom",
+      "name": "Toe Type",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "texture",
+      "namespace": "custom",
+      "name": "Texture",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "heel_type",
+      "namespace": "custom",
+      "name": "Heel Type",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "cushioning_detail",
+      "namespace": "custom",
+      "name": "Cushioning Detail",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "material_care",
+      "namespace": "custom",
+      "name": "Material Care",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "heel_height",
+      "namespace": "custom",
+      "name": "Heel Height",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "heel_pattern",
+      "namespace": "custom",
+      "name": "Heel Pattern",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "us_size",
+      "namespace": "custom",
+      "name": "US Size",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "uk_size",
+      "namespace": "custom",
+      "name": "UK Size",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "product_badges_tag",
+      "namespace": "custom",
+      "name": "product_badges_tag",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "fastening_back_details",
+      "namespace": "custom",
+      "name": "Fastening & Back Details",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "best_seller",
+      "namespace": "custom",
+      "name": "Best Seller",
+      "description": "",
+      "type": {
+        "name": "list.product_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "team_up_with",
+      "namespace": "custom",
+      "name": "team-up-with",
+      "description": "",
+      "type": {
+        "name": "list.product_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "styling_suggestions",
+      "namespace": "custom",
+      "name": "Styling Suggestions",
+      "description": "",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "size_guide_table",
+      "namespace": "custom",
+      "name": "size-guide-table",
+      "description": "",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "similar_product",
+      "namespace": "custom",
+      "name": "similar product",
+      "description": "",
+      "type": {
+        "name": "list.product_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "care",
+      "namespace": "custom",
+      "name": "Care",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "hemline",
+      "namespace": "custom",
+      "name": "Hemline",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "shape",
+      "namespace": "custom",
+      "name": "Shape",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "fabric_type",
+      "namespace": "custom",
+      "name": "Fabric Type",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "fabric_family",
+      "namespace": "custom",
+      "name": "Fabric Family",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "colour_details",
+      "namespace": "custom",
+      "name": "Colour Details",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ornamentation",
+      "namespace": "custom",
+      "name": "Ornamentation",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "slit_detail",
+      "namespace": "custom",
+      "name": "Slit Detail",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ethnicity",
+      "namespace": "custom",
+      "name": "Ethnicity",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "pattern",
+      "namespace": "custom",
+      "name": "Pattern",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "fit",
+      "namespace": "custom",
+      "name": "Fit",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "length",
+      "namespace": "custom",
+      "name": "Length",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "occasion",
+      "namespace": "custom",
+      "name": "Occasion",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "sleeve_styling",
+      "namespace": "custom",
+      "name": "Sleeve Styling",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "sleeve",
+      "namespace": "custom",
+      "name": "Sleeve",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "closure",
+      "namespace": "custom",
+      "name": "Closure",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "neck_type",
+      "namespace": "custom",
+      "name": "Neck Type",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "fabric_detail",
+      "namespace": "custom",
+      "name": "Fabric Detail",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "_fabric_content",
+      "namespace": "custom",
+      "name": " Fabric Content",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "colour",
+      "namespace": "custom",
+      "name": "Colour",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "size",
       "namespace": "shopify",
-      "name": "Product certifications & standards",
-      "description": "Indicates the certifications or standards a product meets, such as organic or cruelty free",
+      "name": "Size",
+      "description": "Used to specify the size of a product, such as 0-3 months or Extra large (XL)",
       "type": {
         "name": "list.metaobject_reference",
         "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "product-form",
-      "namespace": "shopify",
-      "name": "Product form",
-      "description": "Defines the format or presentation of a product, typically for health and beauty; e.g. lotion, serum",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "suitable-for-skin-type",
-      "namespace": "shopify",
-      "name": "Suitable for skin type",
-      "description": "Specifies products for specific skin conditions, such as dry, aging, or sensitive",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "batch_number",
-      "namespace": "custom",
-      "name": "Batch number",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "pdp_featured_collection",
-      "namespace": "custom",
-      "name": "pdp-featured-collection",
-      "description": "",
-      "type": {
-        "name": "collection_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "customer_reviews",
-      "namespace": "custom",
-      "name": "Customer reviews",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "product_ratings",
-      "namespace": "custom",
-      "name": "Product Ratings",
-      "description": "",
-      "type": {
-        "name": "number_decimal",
-        "category": "NUMBER"
-      }
-    },
-    {
-      "key": "card_subtext",
-      "namespace": "custom",
-      "name": "Card subtext",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
       }
     },
     {
@@ -232,284 +601,103 @@
       }
     },
     {
-      "key": "enable_sale",
-      "namespace": "custom",
-      "name": "Enable Sale",
-      "description": "",
+      "key": "age-group",
+      "namespace": "shopify",
+      "name": "Age group",
+      "description": "Defines the target age range for a product, such as adults or kids",
       "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "subscription_labels",
-      "namespace": "custom",
-      "name": "Subscription labels",
-      "description": "",
-      "type": {
-        "name": "json",
-        "category": "JSON"
-      }
-    },
-    {
-      "key": "subscription_discounts",
-      "namespace": "custom",
-      "name": "Subscription discounts",
-      "description": "",
-      "type": {
-        "name": "json",
-        "category": "JSON"
-      }
-    },
-    {
-      "key": "enable_circular_claims",
-      "namespace": "custom",
-      "name": "Enable Circular Claims",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_pdp_shipping_list",
-      "namespace": "custom",
-      "name": "Enable PDP shipping list",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_out_of_stock",
-      "namespace": "custom",
-      "name": "Enable out of stock",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_before_after_slider",
-      "namespace": "custom",
-      "name": "Enable Before After Slider",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_single_one_time_purchase",
-      "namespace": "custom",
-      "name": "Enable single one time purchase",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_subscription",
-      "namespace": "custom",
-      "name": "Enable Subscription",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_list_claims",
-      "namespace": "custom",
-      "name": "Enable list claims",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "discount_label_text",
-      "namespace": "custom",
-      "name": "Discount Label Text",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "enable_no_index",
-      "namespace": "custom",
-      "name": "Enable No Index",
-      "description": "",
-      "type": {
-        "name": "boolean",
-        "category": "TRUE_FALSE"
-      }
-    },
-    {
-      "key": "product_card_hover_image",
-      "namespace": "custom",
-      "name": "Product Card Hover Image",
-      "description": "",
-      "type": {
-        "name": "file_reference",
+        "name": "list.metaobject_reference",
         "category": "REFERENCE"
       }
     },
     {
-      "key": "checkout_reviews",
-      "namespace": "custom",
-      "name": "Checkout reviews",
-      "description": "",
+      "key": "target-gender",
+      "namespace": "shopify",
+      "name": "Target gender",
+      "description": "Identifies the intended gender for a product, such as female, male or unisex",
       "type": {
-        "name": "json",
-        "category": "JSON"
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
       }
     },
     {
-      "key": "market_visibility",
+      "key": "fabric",
+      "namespace": "shopify",
+      "name": "Fabric",
+      "description": "Identifies the type of fabric used in a product, for example, cotton or denim",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "fit",
+      "namespace": "shopify",
+      "name": "Fit",
+      "description": "Describes the fit of a garment, typically pant shape; e.g. skinny leg, wide",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "pants-length-type",
+      "namespace": "shopify",
+      "name": "Pants length type",
+      "description": "Used to defines the length of pants, such as cropped or long",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "scarf-shawl-style",
+      "namespace": "shopify",
+      "name": "Scarf/Shawl style",
+      "description": "Identifies the style of scarves and shawls, e.g. blanket, wrap",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "popular_tags",
       "namespace": "custom",
-      "name": "Market visibility",
+      "name": "Popular Tags",
       "description": "",
       "type": {
-        "name": "single_line_text_field",
+        "name": "rich_text_field",
         "category": "TEXT"
+      }
+    },
+    {
+      "key": "waist-rise",
+      "namespace": "shopify",
+      "name": "Waist rise",
+      "description": "Indicates where on the waist a garment sits, like low, medium or high",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "clothing-features",
+      "namespace": "shopify",
+      "name": "Clothing features",
+      "description": "Describes unique properties of apparel, such as water resistant or wrinkle resistant",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
       }
     }
   ],
-  "variant": [
-    {
-      "key": "age_group",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Age Group",
-      "description": "The demographic for which your product is intended.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "condition",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Condition",
-      "description": "The condition of your product at time of sale.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "gender",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Gender",
-      "description": "The gender for which your product is intended.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "mpn",
-      "namespace": "mm-google-shopping",
-      "name": "Google: MPN",
-      "description": "Your product’s Manufacturer Part Number (MPN).",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "size_type",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Size Type",
-      "description": "Your apparel product’s cut.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "size_system",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Size System",
-      "description": "The country of the size system used by your product.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "custom_label_0",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Custom Label 0",
-      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "custom_label_1",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Custom Label 1",
-      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "custom_label_2",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Custom Label 2",
-      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "custom_label_3",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Custom Label 3",
-      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "custom_label_4",
-      "namespace": "mm-google-shopping",
-      "name": "Google: Custom Label 4",
-      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    }
-  ],
+  "variant": [],
   "shop": [
     {
-      "key": "tokens",
-      "namespace": "ab_test",
-      "name": "AB test tokens",
-      "description": "",
-      "type": {
-        "name": "json",
-        "category": "JSON"
-      }
-    },
-    {
-      "key": "order_analytics",
-      "namespace": "ab_test",
-      "name": "A/B Test Order Analytics",
-      "description": "",
+      "key": "config",
+      "namespace": "wizzy",
+      "name": "Wizzy Config",
+      "description": "Wizzy Search Config of the Store",
       "type": {
         "name": "json",
         "category": "JSON"

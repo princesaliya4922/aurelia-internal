@@ -7,6 +7,15 @@
   >
 {% endif %}
 
+{% if template.name == 'product' %}
+  <link
+    fetchpriority="high"
+    rel="preload"
+    href="{{ product.featured_image | image_url: width: 500 }}"
+    as="image"
+  >
+{% endif %}
+
 {% if template.name == 'collection' %}
   {% assign first_product = collection.products.first %}
   {% if first_product and first_product.available %}

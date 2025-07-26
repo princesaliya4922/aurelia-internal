@@ -3797,53 +3797,71 @@
 {% render 'lazy-js', filename: 'jquery.fancybox.min.js', loading: 'lazy' %}
 
 <script>
-  jQuery(document).ready(function ($) {
-    $('[data-fancybox]').fancybox({
-      afterShow: function (instance, current) {
-        $('.fancybox-button--zoom').click({
-          loop: false,
-          toolbar: false,
-          smallBtn: false,
-          iframe: {
-            preload: false,
+  document.addEventListener('DOMContentLoaded', () => {
+    const initFancybox = () => {
+      if (typeof Fancybox === 'undefined') return;
+
+      // Initialize main fancybox
+      Fancybox.bind('[data-fancybox]', {
+        on: {
+          done: (fancybox, slide) => {
+            document.querySelectorAll('.fancybox-button--zoom').forEach((button) => {
+              button.addEventListener('click', () => {
+                Fancybox.show([{ src: slide.src, type: 'image' }], {
+                  loop: false,
+                  toolbar: false,
+                  smallBtn: false,
+                  iframe: { preload: false },
+                });
+              });
+            });
           },
-        });
-      },
-    });
-    $('.fancybox-button--zoom').attr('data-fancybox', 'mygallery');
-    $('.fancybox-button--zoom').fancybox({
-      transitionIn: 'elastic',
-      transitionOut: 'elastic',
-      speedIn: 600,
-      speedOut: 200,
-      overlayShow: true,
-      toolbar: true,
-      smallBtn: false,
-    });
+        },
+      });
+
+      // Configure zoom buttons
+      document
+        .querySelectorAll('.fancybox-button--zoom')
+        .forEach((button) => button.setAttribute('data-fancybox', 'mygallery'));
+
+      // Initialize zoom fancybox
+      Fancybox.bind('.fancybox-button--zoom', {
+        animationEffect: 'zoom-in-out',
+        animationDuration: 600,
+        transitionDuration: 200,
+        toolbar: true,
+        smallBtn: false,
+      });
+    };
+
+    initFancybox();
   });
 </script>
 
 <script>
-  const $table = $('.guide_table table');
-  const $rows = $table.find('tbody tr');
-  const $headerRow = $rows.first();
-  const $dataRows = $rows.slice(1);
-  const $headers = $headerRow.find('td');
-  $headers.each(function (index) {
-    let allEmpty = true;
-    $dataRows.each(function () {
-      const $cell = $(this).find('td').eq(index);
-      if ($cell.length && $cell.text().trim() !== '') {
-        allEmpty = false;
-        return false;
+  document.addEventListener('DOMContentLoaded', () => {
+    const table = document.querySelector('.guide_table table tbody');
+    if (!table) return;
+
+    const rows = [...table.querySelectorAll('tr')];
+    if (rows.length === 0) return;
+
+    const [headerRow, ...dataRows] = rows;
+    const headers = [...headerRow.querySelectorAll('td')];
+
+    headers.forEach((header, index) => {
+      const isEmpty = dataRows.every((row) => {
+        const cell = row.querySelectorAll('td')[index];
+        return !cell || !cell.textContent.trim();
+      });
+
+      if (isEmpty) {
+        // Hide header and all cells in this column
+        [header, ...dataRows.map((row) => row.querySelectorAll('td')[index])]
+          .filter(Boolean)
+          .forEach((element) => (element.style.display = 'none'));
       }
     });
-    if (allEmpty) {
-      $(this).hide();
-      $dataRows.each(function () {
-        $(this).find('td').eq(index).hide();
-      });
-    }
   });
 </script>
 

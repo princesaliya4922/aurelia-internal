@@ -1,6 +1,10 @@
-<script src="{{ 'jquery.min.js' | asset_url }}"></script>
-
-<script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}" defer></script>
+{% if template.name == 'product' %}
+  {% render 'lazy-js', filename: 'jquery.min.js', loading: 'defer', device: 'desktop' %}
+  {% render 'lazy-js', filename: 'slick.min.js', loading: 'defer', device: 'desktop' %}
+{% else %}
+  <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+  <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}" defer></script>
+{% endif %}
 
 {% if template.name == 'product' %}
   {% render 'product-render-js-asset' %}

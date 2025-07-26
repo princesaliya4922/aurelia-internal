@@ -1,413 +1,382 @@
+{% render 'lazy-css', filename: 'otp-overlay.css', loading: 'preload' %}
+
 <div class="otp_overlay">
   <div class="main_otp_container">
-   <div class="main_otp_container_inner">
+    <div class="main_otp_container_inner">
       <div class="otp_pop_heading">
         <span class="font-medium">LOGIN</span>
         <a class="close_otp" href="#">&times;</a>
+      </div>
+      <form class="login-form">
+        <div class="field-mobile">
+          <label class="label">
+            <span>Mobile Number</span>
+          </label>
+          <input
+            maxlength="10"
+            autocomplete="off"
+            name="mobile"
+            autofocus="autofocus"
+            class="input-text form-control cstm__phone"
+            _cl_tracker_added_cl7466="true"
+          >
+          <p class="size_error phone"></p>
+        </div>
+
+        <div class="field_otp">
+          <label class="label">
+            <span>One Time Password(OTP)</span>
+          </label>
+          <input
+            maxlength="6"
+            type="text"
+            name="customerpassword"
+            disabled="disabled"
+            autocomplete="off"
+            class="input-text form-control cstm__otp"
+          >
+          <p class="size_error otp"></p>
+          <label class="timer-main font-medium">
+            <span>Please enter the OTP sent on your Mobile</span>
+            <a href="#" id="resend" class="action otp-resend-button"><span>Resend OTP </span></a>
+            <span class="timer-container" id="resendcountdown">00:60</span>
+          </label>
+        </div>
+      </form>
     </div>
-     <form class="login-form">
-       <div class="field-mobile">
-         <label class="label">
-           <span>Mobile Number</span>
-         </label> 
-         <input maxlength="10" autocomplete="off" name="mobile" autofocus="autofocus"
-           class="input-text form-control cstm__phone" _cl_tracker_added_cl7466="true"> 
-         <p class="size_error phone"></p>
-       </div> 
-       
-       <div class="field_otp">
-         <label class="label">
-           <span>One Time Password(OTP)</span>
-         </label> 
-         <input maxlength="6" type="text" name="customerpassword" disabled="disabled" autocomplete="off" 
-           class="input-text form-control cstm__otp"> 
-         <p class="size_error otp"></p> 
-         <label class="timer-main font-medium">
-           <span>Please enter the OTP sent on your Mobile</span>
-           <a href="#" id="resend" class="action otp-resend-button"><span>Resend OTP </span></a>
-           <span class="timer-container" id="resendcountdown">00:60</span>
-         </label>
-       </div>
-     </form>
-   </div>
   </div>
 </div>
 
-<style>
-.otp_overlay{
-    display:none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #0003;
-    z-index: 200;
-  }
-.main_otp_container{
-    position:relative;
-}
-.main_otp_container_inner{
-    position: absolute;
-    background: #fff;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 100px);
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, .2);
-}
-.otp_pop_heading{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    line-height: 0;
-    margin-bottom:15px;
-}
-.otp_pop_heading h2{
-    font-size: 15px;
-    margin: 0;
-    letter-spacing: 0;
-    color: #333;
-    
-}
-.otp_pop_heading a.close_otp {
-    font-size: 32px;
-    text-decoration: none;
-    color: #000;
-}
-.main_otp_container_inner .field-mobile,
-.main_otp_container_inner .field_otp{
-    display: flex;
-    flex-direction: column;
-}
-.main_otp_container_inner input.input-text.form-control{
-    padding: 5px 9px;
-    height: 45px;
-    font-size: 14px;
-}
-.main_otp_container_inner input.input-text.form-control:focus-visible{
-    outline: none;
-    outline-offset: 0;
-    box-shadow: none;
-}
-.main_otp_container_inner .field-mobile {
-    margin-bottom: 10px;
-}
-.main_otp_container_inner .field-mobile label.label span,
-.main_otp_container_inner .field_otp label.label span{
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-.main_otp_container_inner label.timer-main{
-    font-size: 14px;
-}
-  .error_message {
-    margin: 0 0 10px;
-    padding: 10px;
-    display: block;
-    line-height: 15px;
-    font-size: 14px;
-    background: #ffe6e6;
-    color: #bf1616;
-    position: relative;
-}
-  .error_message:before {
-    color: #fff;
-    content: "\f00c";
-    background-color: #bf1616;
-    font: normal normal normal 12px / 1 FontAwesome;
-    height: 15px;
-    width: 15px;
-    padding: 2px;
-    margin-right: 5px;
-    top: -2px;
-    position: relative;
-}
-  .success_message {
-    margin: 0 0 10px;
-    padding: 10px;
-    display: block;
-    line-height: 15px;
-    font-size: 14px;
-    background: #e5efe5;
-    color: #006400;
-    position: relative;
-}
-  .success_message:before {
-    color: #fff;
-    content: "\f00c";
-    background-color: #006400;
-    font: normal normal normal 12px / 1 FontAwesome;
-    height: 15px;
-    width: 15px;
-    padding: 2px;
-    margin-right: 5px;
-    top: -2px;
-    position: relative;
-}
-  .otp-resend-button,.timer-container {
-    float: right;
-}
-  .otp-resend-button{
-    display:none;
-    color: #212121;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .otp-resend-button:hover {
-        color: #0056b3;
-    text-decoration: underline;
-  }
-  .timer-container{
-    display:none;
-  }
-@media(min-width:750px){
-  .main_otp_container_inner{
-    max-width: 550px;
-    width: 550px;
-    padding: 4%;
-  }
-}
-@media(max-width:749px){
-  .main_otp_container_inner{
-    max-width: 100%;
-    width: 100%;
-    padding: 3rem;
-  }
-}
-</style>
-
 <script>
-$(document).ready(function(){
-var register = false;
-  $('body').on('click','.close_otp',function(){
-   $(".otp_overlay").hide();
+document.addEventListener('DOMContentLoaded', function() {
+  let register = false;
+  let countdown;
+
+  // Utility functions
+  const removeMessages = () => {
+    document.querySelectorAll('.error_message, .success_message').forEach(el => el.remove());
+  };
+
+  const showMessage = (message, type = 'error') => {
+    removeMessages();
+    const heading = document.querySelector('.otp_pop_heading');
+    if (heading) {
+      heading.insertAdjacentHTML('beforebegin', `<div class="${type}_message">${message}</div>`);
+    }
+  };
+
+  const showOverlay = () => {
+    const overlay = document.querySelector('.otp_overlay');
+    if (overlay) overlay.style.display = 'block';
+  };
+
+  const hideOverlay = () => {
+    const overlay = document.querySelector('.otp_overlay');
+    if (overlay) overlay.style.display = 'none';
+  };
+
+  // Close OTP overlay
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('.close_otp')) {
+      hideOverlay();
       localStorage.setItem("manage-order", "");
-  });
- 
-  $('body').on('click','.header__icon--account',function(e){
-    {% if customer %}
-       // e.preventDefault();
-     // window.location.href="/account"
-      {% else %}
-   e.preventDefault();
-   $(".otp_overlay").show();
-      {% endif %}
+    }
   });
 
-  $('.cstm__phone').on('input',function(e){
+  // Account icon click handler
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('.header__icon--account')) {
+      {% unless customer %}
+        e.preventDefault();
+        showOverlay();
+      {% endunless %}
+    }
+  });
+
+  // Phone number input handler
+  const phoneInput = document.querySelector('.cstm__phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
       register = false;
-    $('.error_message').remove();
-    $('.success_message').remove();
-    var val = $(this).val();
-    if(val.length == 10){
-      e.preventDefault();
-     $(this).attr('disabled','disabled');
-    $('.size_error.phone').text('');
-    if(val.startsWith("1") || val.startsWith("2") ||val.startsWith("3") || val.startsWith("4")){
-      $('.otp_pop_heading').before('<div class="error_message">The phone must start with one of the following:  5, 6, 7, 8, 9</div>')
-      return false;
-    }
-    sendOTP(val,1);  
-    
-    }else{
-      $('.size_error.phone').text('Please enter valid mobile number').css({'color':'red'});
-    }
-  })
-
-  $('body').on('click','.otp-resend-button',function(){
-    var val = $('.cstm__phone').val();
-    if(val.length == 10){
-       $('.cstm__phone').attr('disabled','disabled');
-       if(val.startsWith("1") || val.startsWith("2") ||val.startsWith("3") || val.startsWith("4")){
-      $('.otp_pop_heading').before('<div class="error_message">The phone must start with one of the following:  5, 6, 7, 8, 9</div>');
-      return false;
-    }
-       sendOTP(val,1);
-    }
-    else{
-      $('.size_error.phone').text('Please enter valid mobile number').css({'color':'red'});
-    }
-  })
-
-  $('.cstm__otp').on('input',function(e){
-     var val = $('.cstm__phone').val();
-     var otp = $('.cstm__otp').val(); 
-   if(otp.length == 6){
-     e.preventDefault();
-     $(this).attr('disabled','disabled');
-     if(register == true){
-       varifyregisterOtp(val,otp);
-     }else{
-     varifyOTP(val,otp);
-     }
-   }
-  })
-
-  function sendOTP(val,time){
-     $('.error_message').remove();
-    $('.success_message').remove();
-    fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/login/sendotp', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-       "mobileNumber": `${val}`
-      })
-    }).then((response) => {
-      return response.json();
-     }).then((response) => {
-      // console.log(response);
-      if(response.success == true){
-        $('.error_message').remove();
-    $('.success_message').remove();
-    $('.otp_pop_heading').before(`<div class="success_message">${response.message}</div>`); 
-    $('.cstm__otp').removeAttr('disabled').focus();
-    if(time==0){
-    $('.otp-resend-button').show();
-    }else{
-      timer(60);
-    }
-      }else{
-        if(response.success == false){
-          if(response.message.toLowerCase().includes("you are not a registered") || response.message.toLowerCase().includes("please create a new account")) {
-            registerOtp(val,time);
-          } else {
-            $('.otp_pop_heading').before(`<div class="error_message">${response.message}</div>`);  
-          }
-        }else{
-        $('.otp_pop_heading').before(`<div class="error_message">${response.message}</div>`);  
+      removeMessages();
+      
+      const val = this.value;
+      const phoneError = document.querySelector('.size_error.phone');
+      
+      if (val.length === 10) {
+        e.preventDefault();
+        this.disabled = true;
+        
+        if (phoneError) phoneError.textContent = '';
+        
+        if (val.startsWith("1") || val.startsWith("2") || val.startsWith("3") || val.startsWith("4")) {
+          showMessage('The phone must start with one of the following: 5, 6, 7, 8, 9');
+          this.disabled = false;
+          return;
+        }
+        
+        sendOTP(val, 1);
+      } else {
+        if (phoneError) {
+          phoneError.textContent = 'Please enter valid mobile number';
+          phoneError.style.color = 'red';
         }
       }
-      $('.cstm__phone').removeAttr('disabled');
-    }).catch((error) => {
-      $('.cstm__phone').removeAttr('disabled');
-      console.error("Error: ", error);
-    })
+    });
   }
 
-  function varifyOTP(val,otp){
-    $('.error_message').remove();
-    $('.success_message').remove();
-    fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/login/verifyotp', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-       "mobileNumber": `${val}`,
-        "otp":`${otp}`
-      })
-    }).then((response) => {
-      return response.json();
-     }).then((response) => {
-   if(response.success == true){
-      window.location.href=response.url;
-    $('.otp_pop_heading').before(`<div class="success_message">${response.message}</div>`); 
-   }else{
-    $('.otp_pop_heading').before(`<div class="error_message">${response.message}</div>`); 
-   }
-       $('.cstm__otp').removeAttr('disabled');
-    }).catch((error) => {
-         $('.cstm__otp').removeAttr('disabled');
-      console.error("Error: ", error);
-    })
-  }
-
-  function registerOtp(val,time){
-     register = true;
-     $('.error_message').remove();
-    $('.success_message').remove();
-    fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/register/sendotp', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-       "mobileNumber": `${val}`
-      })
-    }).then((response) => {
-      return response.json();
-     }).then((response) => {
-      // console.log(response);
-      if(response.success == true){
-        $('.error_message').remove();
-    $('.success_message').remove();
-    $('.otp_pop_heading').before(`<div class="success_message">${response.message}</div>`); 
-    $('.cstm__otp').removeAttr('disabled').focus();
-    if(time==0){
-    $('.otp-resend-button').show();
-    }else{
-      timer(60);
-    }
-      }else{
-        $('.otp_pop_heading').before(`<div class="error_message">${response.message}</div>`);  
+  // OTP resend button handler
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('.otp-resend-button')) {
+      const phoneInput = document.querySelector('.cstm__phone');
+      const val = phoneInput ? phoneInput.value : '';
+      
+      if (val.length === 10) {
+        phoneInput.disabled = true;
+        
+        if (val.startsWith("1") || val.startsWith("2") || val.startsWith("3") || val.startsWith("4")) {
+          showMessage('The phone must start with one of the following: 5, 6, 7, 8, 9');
+          phoneInput.disabled = false;
+          return;
+        }
+        
+        sendOTP(val, 1);
+      } else {
+        const phoneError = document.querySelector('.size_error.phone');
+        if (phoneError) {
+          phoneError.textContent = 'Please enter valid mobile number';
+          phoneError.style.color = 'red';
+        }
       }
-      $('.cstm__phone').removeAttr('disabled');
-    }).catch((error) => {
-      $('.cstm__phone').removeAttr('disabled');
-      console.error("Error: ", error);
-    })
-  }
-  function varifyregisterOtp(val,otp){
-    $('.error_message').remove();
-    $('.success_message').remove();
-    fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/register/verifyotp', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-       "mobileNumber": `${val}`,
-        "otp":`${otp}`,
-        "first_name": "",
-        "last_name": ""
-      })
-    }).then((response) => {
-      return response.json();
-     }).then((response) => {
-   if(response.success == true){
-    $('.otp_pop_heading').before(`<div class="success_message">${response.message}</div>`); 
-     window.location.href=response.url;
-   }else{
-    $('.otp_pop_heading').before(`<div class="error_message">${response.message}</div>`); 
-   }
-         $('.cstm__otp').removeAttr('disabled');
-    }).catch((error) => {
-         $('.cstm__otp').removeAttr('disabled');
-      console.error("Error: ", error);
-    })
+    }
+  });
+
+  // OTP input handler
+  const otpInput = document.querySelector('.cstm__otp');
+  if (otpInput) {
+    otpInput.addEventListener('input', function(e) {
+      const phoneInput = document.querySelector('.cstm__phone');
+      const val = phoneInput ? phoneInput.value : '';
+      const otp = this.value;
+      
+      if (otp.length === 6) {
+        e.preventDefault();
+        this.disabled = true;
+        
+        if (register) {
+          verifyRegisterOtp(val, otp);
+        } else {
+          verifyOTP(val, otp);
+        }
+      }
+    });
   }
 
-   var countdown;
-function timer(seconds) {
+  // Send OTP function
+  async function sendOTP(val, time) {
+    removeMessages();
+    
+    try {
+      const response = await fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/login/sendotp', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          "mobileNumber": val
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        showMessage(data.message, 'success');
+        
+        const otpInput = document.querySelector('.cstm__otp');
+        if (otpInput) {
+          otpInput.disabled = false;
+          otpInput.focus();
+        }
+        
+        if (time === 0) {
+          const resendButton = document.querySelector('.otp-resend-button');
+          if (resendButton) resendButton.style.display = 'block';
+        } else {
+          timer(60);
+        }
+      } else {
+        if (data.message.toLowerCase().includes("you are not a registered") || 
+            data.message.toLowerCase().includes("please create a new account")) {
+          registerOtp(val, time);
+        } else {
+          showMessage(data.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      showMessage("An error occurred. Please try again.");
+    } finally {
+      const phoneInput = document.querySelector('.cstm__phone');
+      if (phoneInput) phoneInput.disabled = false;
+    }
+  }
+
+  // Verify OTP function
+  async function verifyOTP(val, otp) {
+    removeMessages();
+    
+    try {
+      const response = await fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/login/verifyotp', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          "mobileNumber": val,
+          "otp": otp
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        showMessage(data.message, 'success');
+        window.location.href = data.url;
+      } else {
+        showMessage(data.message);
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      showMessage("An error occurred. Please try again.");
+    } finally {
+      const otpInput = document.querySelector('.cstm__otp');
+      if (otpInput) otpInput.disabled = false;
+    }
+  }
+
+  // Register OTP function
+  async function registerOtp(val, time) {
+    register = true;
+    removeMessages();
+    
+    try {
+      const response = await fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/register/sendotp', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          "mobileNumber": val
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        showMessage(data.message, 'success');
+        
+        const otpInput = document.querySelector('.cstm__otp');
+        if (otpInput) {
+          otpInput.disabled = false;
+          otpInput.focus();
+        }
+        
+        if (time === 0) {
+          const resendButton = document.querySelector('.otp-resend-button');
+          if (resendButton) resendButton.style.display = 'block';
+        } else {
+          timer(60);
+        }
+      } else {
+        showMessage(data.message);
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      showMessage("An error occurred. Please try again.");
+    } finally {
+      const phoneInput = document.querySelector('.cstm__phone');
+      if (phoneInput) phoneInput.disabled = false;
+    }
+  }
+
+  // Verify register OTP function
+  async function verifyRegisterOtp(val, otp) {
+    removeMessages();
+    
+    try {
+      const response = await fetch('https://shopify.shopforaurelia.com/otp/shopforaurelia/register/verifyotp', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          "mobileNumber": val,
+          "otp": otp,
+          "first_name": "",
+          "last_name": ""
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        showMessage(data.message, 'success');
+        window.location.href = data.url;
+      } else {
+        showMessage(data.message);
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      showMessage("An error occurred. Please try again.");
+    } finally {
+      const otpInput = document.querySelector('.cstm__otp');
+      if (otpInput) otpInput.disabled = false;
+    }
+  }
+
+  // Timer function
+  function timer(seconds) {
     clearInterval(countdown);
     const now = Date.now();
     const then = now + seconds * 1000;
+    
     displayTimeLeft(seconds);
+    
     countdown = setInterval(() => {
-        const secondsLeft = Math.round((then - Date.now()) / 1000);
-        if (secondsLeft < 0) {
-            clearInterval(countdown);
-            $('.otp-resend-button').css('display', 'block');
-            $('.timer-container').css('display', 'none');
-            return;
-        } else {
-            $('.otp-resend-button').css('display', 'none');
-            $('.timer-container').css('display', 'block');
-        }
-        displayTimeLeft(secondsLeft);
+      const secondsLeft = Math.round((then - Date.now()) / 1000);
+      
+      if (secondsLeft < 0) {
+        clearInterval(countdown);
+        
+        const resendButton = document.querySelector('.otp-resend-button');
+        const timerContainer = document.querySelector('.timer-container');
+        
+        if (resendButton) resendButton.style.display = 'block';
+        if (timerContainer) timerContainer.style.display = 'none';
+        
+        return;
+      } else {
+        const resendButton = document.querySelector('.otp-resend-button');
+        const timerContainer = document.querySelector('.timer-container');
+        
+        if (resendButton) resendButton.style.display = 'none';
+        if (timerContainer) timerContainer.style.display = 'block';
+      }
+      
+      displayTimeLeft(secondsLeft);
     }, 1000);
-}
+  }
+
+  // Display time left function
   function displayTimeLeft(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainderSeconds = seconds % 60;
     const display = `${minutes}:${remainderSeconds < 10 ? '0' : ''}${remainderSeconds}`;
-     var counter = document.getElementById("resendcountdown");
-    counter.innerHTML = display;
-}
-  
+    
+    const counter = document.getElementById("resendcountdown");
+    if (counter) {
+      counter.innerHTML = display;
+    }
+  }
 });
-
 </script>

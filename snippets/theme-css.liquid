@@ -21,8 +21,12 @@
   <noscript><link rel="stylesheet" href="{{ 'font-awesome.min.css' | asset_url }}"></noscript>
 {% endif %}
 
-<link rel="stylesheet" href="{{ 'slick.css' | asset_url }}" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="{{ 'slick.css' | asset_url }}"></noscript>
+{% if template.name != 'product' %}
+  <link rel="stylesheet" href="{{ 'slick.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'slick.css' | asset_url }}"></noscript>
+{% else %}
+  {% render 'lazy-css', filename: 'slick.css', loading: 'low', device: 'desktop' %}
+{% endif %}
 
 {% render 'lazy-css', filename: 'custom.css', loading: 'preload' %}
 
