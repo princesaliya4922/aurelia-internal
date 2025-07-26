@@ -7,10 +7,10 @@
 
 {% comment %} <!-- Optimized non-blocking stylesheet load --> {% endcomment %}
 <link
-  rel="preload"
-  as="style"
+  rel="stylesheet"
   href="https://fastrr-boost-ui.pickrr.com/assets/styles/shopify.css"
-  onload="this.onload=null;this.rel='stylesheet'"
+  media="print"
+  onload="this.media='all'"
 >
 <noscript><link rel="stylesheet" href="https://fastrr-boost-ui.pickrr.com/assets/styles/shopify.css"></noscript>
 

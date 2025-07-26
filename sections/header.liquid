@@ -134,23 +134,30 @@
   {% render 'lazy-css', filename: 'disclosure.css', loading: 'low' %}
 {% endif %}
 
- {% comment %} <link href="{{ 'custom-header.css' | asset_url }}" rel="preload" as="style" fetchpriority="low"> {% endcomment %}
- {% comment %} {{ 'custom-header.css' | asset_url | stylesheet_tag }} {% endcomment %}
 {%- if settings.cart_drawer_enabled -%}
-  {% render 'lazy-css', filename: 'component-cart-drawer.css', loading: 'low' %}
-  {% render 'lazy-css', filename: 'component-discounts.css', loading: 'low' %}
+  {% if template.name == 'product' %}
+    {% render 'lazy-css', filename: 'component-cart-drawer.css', loading: 'lazy' %}
+    {% render 'lazy-css', filename: 'component-discounts.css', loading: 'lazy' %}
+  {% else %}
+    {% render 'lazy-css', filename: 'component-cart-drawer.css', loading: 'low' %}
+    {% render 'lazy-css', filename: 'component-discounts.css', loading: 'low' %}
+  {% endif %}
 {%- endif -%}
 
 {%- if settings.predictive_search_enabled -%}
   {% unless template.name == 'product' %}
     {% render 'lazy-css', filename: 'component-price.css', loading: 'low' %}
   {% endunless %}
-  {% render 'lazy-css', filename: 'component-loading-overlay.css', loading: 'low' %}
+  {% render 'lazy-css', filename: 'component-loading-overlay.css', loading: 'lazy' %}
 {%- endif -%}
 
 {%- if enable_dropdown_menu -%}
   {% render 'lazy-css', filename: 'component-menu-dropdown.css', loading: 'low' %}
-  <script src="{{ 'menu-dropdown.js' | asset_url }}" defer="defer"></script>
+  {% if template.name != 'product' %}
+    <script src="{{ 'menu-dropdown.js' | asset_url }}" defer="defer"></script>
+  {% else %}
+    {% render 'lazy-js', filename: 'menu-dropdown.js', loading: 'lazy' %}
+  {% endif %}
 {%- endif -%}
 
 {%- if enable_transparent_header -%}
@@ -165,7 +172,12 @@
 <noscript>{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'disclosure.css' | asset_url | stylesheet_tag }}</noscript>
 
-<script src="{{ 'search-modal.js' | asset_url }}" defer="defer"></script>
+{% if template.name == 'product' %}
+  {% render 'lazy-js', filename: 'search-modal.js', loading: 'lazy' %}
+{% else %}
+  <script src="{{ 'search-modal.js' | asset_url }}" defer="defer"></script>
+{% endif %}
+
 {%- if settings.cart_recommendations_enabled -%}
   {% if template.name == 'product' %}
     {% render 'lazy-css', filename: 'component-cart-recommendations.css', loading: 'lazy' %}

@@ -178,6 +178,7 @@
         </pickup-availability-preview>
       </template>
     </pickup-availability>
-    <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+
+    {% render 'lazy-js', filename: 'pickup-availability.js', loading: 'lazy' %}
   {%- endif -%}
 {%- endif -%}

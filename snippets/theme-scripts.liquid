@@ -10,9 +10,15 @@
   {% render 'product-render-js-asset' %}
 {% endif %}
 
-<script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer></script>
-<script src="{{ 'pubsub.js' | asset_url }}" defer></script>
-<script src="{{ 'global.js' | asset_url }}" defer></script>
+{% if template.name != 'product' %}
+  <script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer></script>
+  <script src="{{ 'pubsub.js' | asset_url }}" defer></script>
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+{% else %}
+  {% render 'lazy-js', filename: 'vendor-v4.js', loading: 'lazy' %}
+  {% render 'lazy-js', filename: 'pubsub.js', loading: 'lazy' %}
+  {% render 'lazy-js', filename: 'global.js', loading: 'lazy' %}
+{% endif %}
 
 {% if template.name != 'product' %}
   <script src="{{ 'custom.min.js' | asset_url }}" defer></script>

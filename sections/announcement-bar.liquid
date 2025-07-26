@@ -50,19 +50,32 @@
 
   <div class="announcement-bar header-section--padding">
     <div class="page-width">
-      <announcement-bar data-layout="{{ section.settings.layout }}" data-mobile-layout="{{ section.settings.mobile_layout }}" data-autorotate="{{ section.settings.autorotate }}" data-autorotate-speed="{{ section.settings.autorotate_speed }}" data-block-count="{{ section.blocks.size }}" data-speed="{{ section.settings.speed }}" data-direction="{{ section.settings.direction }}">
+      <announcement-bar
+        data-layout="{{ section.settings.layout }}"
+        data-mobile-layout="{{ section.settings.mobile_layout }}"
+        data-autorotate="{{ section.settings.autorotate }}"
+        data-autorotate-speed="{{ section.settings.autorotate_speed }}"
+        data-block-count="{{ section.blocks.size }}"
+        data-speed="{{ section.settings.speed }}"
+        data-direction="{{ section.settings.direction }}"
+      >
         <div class="announcement-slider">
           {%- for block in section.blocks -%}
-            <div class="announcement-slider__slide" style="--font-size: {{ block.settings.text_size }}px;" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div
+              class="announcement-slider__slide"
+              style="--font-size: {{ block.settings.text_size }}px;"
+              data-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
               {%- if block.settings.link != blank -%}
                 <a class="announcement-link" href="{{ block.settings.link }}">
               {%- endif -%}
-                {%- if block.settings.text_on_mobile != blank -%}
-                  <span class="announcement-text small-hide medium-hide">{{ block.settings.text | escape }}</span>
-                  <span class="announcement-text large-up-hide">{{ block.settings.text_on_mobile | escape }}</span>
-                {%- else -%}
-                  <span class="announcement-text">{{ block.settings.text | escape }}</span>
-                {%- endif -%}
+              {%- if block.settings.text_on_mobile != blank -%}
+                <span class="announcement-text small-hide medium-hide">{{ block.settings.text | escape }}</span>
+                <span class="announcement-text large-up-hide">{{ block.settings.text_on_mobile | escape }}</span>
+              {%- else -%}
+                <span class="announcement-text">{{ block.settings.text | escape }}</span>
+              {%- endif -%}
               {%- if block.settings.link != blank -%}
                 </a>
               {%- endif -%}
@@ -71,10 +84,18 @@
         </div>
         {%- if section.settings.show_navigation and section.blocks.size > 1 -%}
           <div class="announcement__buttons">
-            <button class="announcement__button announcement__button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}">
+            <button
+              class="announcement__button announcement__button--prev"
+              name="previous"
+              aria-label="{{ 'general.slider.previous_slide' | t }}"
+            >
               {% render 'icon', icon: 'chevron-alt' %}
             </button>
-            <button class="announcement__button announcement__button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}">
+            <button
+              class="announcement__button announcement__button--next"
+              name="next"
+              aria-label="{{ 'general.slider.next_slide' | t }}"
+            >
               {% render 'icon', icon: 'chevron-alt' %}
             </button>
           </div>
@@ -82,14 +103,22 @@
       </announcement-bar>
     </div>
   </div>
-  
+
   {%- unless request.design_mode -%}
-    <script src="{{ 'announcement-bar.js' | asset_url }}" defer="defer"></script>
+    {% if template.name != 'product' %}
+      <script src="{{ 'announcement-bar.js' | asset_url }}" defer="defer"></script>
+    {% else %}
+      {% render 'lazy-js', filename: 'announcement-bar.js', loading: 'lazy' %}
+    {% endif %}
   {%- endunless -%}
 {%- endif -%}
 
 {%- if request.design_mode -%}
-  <script src="{{ 'announcement-bar.js' | asset_url }}" defer="defer"></script>
+  {% if template.name != 'product' %}
+    <script src="{{ 'announcement-bar.js' | asset_url }}" defer="defer"></script>
+  {% else %}
+    {% render 'lazy-js', filename: 'announcement-bar.js', loading: 'lazy' %}
+  {% endif %}
 {%- endif -%}
 
 {% schema %}
