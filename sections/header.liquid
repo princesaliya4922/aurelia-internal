@@ -131,7 +131,9 @@
 {%- endif -%}
 
 {%- if settings.predictive_search_enabled -%}
+  {% unless template.name == 'product' %}
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% endunless %}
   <link rel="stylesheet" href="{{ 'component-loading-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 

@@ -8,13 +8,17 @@
 
 {% unless template.name == 'product' %}
   <link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link href="{{ 'component-card.css' | asset_url }}" rel="preload" as="style">
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  <link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
+  {{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
 {% endunless %}
 
-<link href="{{ 'component-card.css' | asset_url }}" rel="preload" as="style">
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
-<link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
-{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+{% if template.name == 'product' %}
+  {% render 'lazy-css', filename: 'component-card.css', loading: 'lazy' %}
+  {% render 'lazy-css', filename: 'component-product-grid.css', loading: 'lazy' %}
+{% endif %}
 
 <link
   rel="stylesheet"

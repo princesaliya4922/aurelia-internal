@@ -24,19 +24,21 @@
 
   {%- when 'lazy' -%}
     <script>
-      window.lazyResources = window.lazyResources || {
-        scripts: [],
-        addScript: function (url, priority) {
-          this.scripts.push({ url: url, priority: priority });
-        },
-      };
-      window.lazyResources.addScript('{{ js_url }}', 'low');
+      (function () {
+        function addToQueue() {
+          if (window.lazyResources && typeof window.lazyResources.addScript === 'function') {
+            window.lazyResources.addScript('{{ js_url }}', 'low');
+          } else {
+            setTimeout(addToQueue, 50);
+          }
+        }
+        addToQueue();
+      })();
     </script>
     <noscript>
       <script src="{{ js_url }}"></script>
     </noscript>
 
   {%- else -%}
-    {%- comment -%} Fallback to standard blocking loading {%- endcomment -%}
     <script src="{{ js_url }}"></script>
 {%- endcase -%}

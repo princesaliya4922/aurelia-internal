@@ -32,15 +32,16 @@
 
   {%- when 'lazy' -%}
     <script>
-      if (window.lazyAssets) {
-        window.lazyAssets.add('css', '{{ css_url }}');
-      } else {
-        document.addEventListener('DOMContentLoaded', function () {
-          if (window.lazyAssets) {
-            window.lazyAssets.add('css', '{{ css_url }}');
+      (function () {
+        function addToQueue() {
+          if (window.lazyResources && typeof window.lazyResources.addCSS === 'function') {
+            window.lazyResources.addCSS('{{ css_url }}', 'low');
+          } else {
+            setTimeout(addToQueue, 50);
           }
-        });
-      }
+        }
+        addToQueue();
+      })();
     </script>
     <noscript><link rel="stylesheet" href="{{ css_url }}" media="{{ media_query }}"></noscript>
 

@@ -5,35 +5,57 @@
     --image-position: {{ section.settings.image_position }};
   }
 {%- endstyle -%}
+
+{% unless template.name == 'product' %}
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+{% endunless %}
+
 <link href="{{ 'component-card.css' | asset_url }}" rel="preload" as="style">
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
 <link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
 {{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'section-product-recommendations.css' | asset_url }}" media="print" onload="this.media='all'">
+<link
+  rel="stylesheet"
+  href="{{ 'section-product-recommendations.css' | asset_url }}"
+  media="print"
+  onload="this.media='all'"
+>
 
 {%- if settings.quick_view_enabled and section.settings.enable_quick_view -%}
   <link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link
+    rel="stylesheet"
+    href="{{ 'component-deferred-media.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
 {%- endif -%}
 
-<product-recommendations class="product-recommendations" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_list_limit }}">
+<product-recommendations
+  class="product-recommendations"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_list_limit }}"
+>
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
     <div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
       <div class="page-width page-width--inner">
         <div class="title-wrapper{% if section.settings.heading == blank %} title-wrapper--no-heading{% endif %} {{ section.settings.heading_alignment }}">
-          <{{ section.settings.heading_tag }} class="title {{ section.settings.heading_size }}">{{ section.settings.heading | escape }}</{{ section.settings.heading_tag }}>
+          <{{ section.settings.heading_tag }} class="title {{ section.settings.heading_size }}">
+            {{- section.settings.heading | escape -}}
+          </{{ section.settings.heading_tag }}>
         </div>
-        
+
         <slider-component class="slider-mobile-gutter">
-          <ul id="Slider-{{ section.id }}"
+          <ul
+            id="Slider-{{ section.id }}"
             class="product-grid grid{% if section.settings.columns_mobile == '1' %} grid--1-col-mobile{% endif %} grid--2-col grid--3-col-tablet grid--4-col-desktop{% if section.settings.swipe_on_mobile %} slider slider--tablet{% endif %} slider--tablet-up"
             role="list"
           >
             {%- for recommendation in recommendations.products -%}
-              <li id="Slide-{{ section.id }}-{{ forloop.index }}"
-                class="grid__item">
+              <li
+                id="Slide-{{ section.id }}-{{ forloop.index }}"
+                class="grid__item"
+              >
                 {% render 'card-product',
                   lazy_load: true,
                   card_product: recommendation,

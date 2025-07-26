@@ -1,8 +1,6 @@
 {% comment %} Font Faces {% endcomment %}
-{% unless template.name == 'product' %}
-  <link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}"></noscript>
-{% endunless %}
+<link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}"></noscript>
 
 {% comment %} Mobile Size Card Product {% endcomment %}
 <link
