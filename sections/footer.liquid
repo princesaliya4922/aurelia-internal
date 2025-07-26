@@ -28,6 +28,9 @@
   <noscript>{{ 'component-list-social.css' | asset_url | stylesheet_tag }}</noscript>
   <noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
   <noscript>{{ 'disclosure.css' | asset_url | stylesheet_tag }}</noscript>
+
+  <script src="{{ 'footer-accordion.js' | asset_url }}" defer="defer"></script>
+
 {% else %}
   {% render 'lazy-css', filename: 'section-footer.css', loading: 'lazy' %}
   {% render 'lazy-css', filename: 'custom-footer.css', loading: 'lazy' %}
@@ -35,9 +38,9 @@
   {% render 'lazy-css', filename: 'component-newsletter.css', loading: 'lazy' %}
   {% render 'lazy-css', filename: 'component-list-payment.css', loading: 'lazy' %}
   {% render 'lazy-css', filename: 'component-list-social.css', loading: 'lazy' %}
-{% endif %}
 
-<script src="{{ 'footer-accordion.js' | asset_url }}" defer="defer"></script>
+  {% render 'lazy-js', filename: 'footer-accordion.js', loading: 'lazy' %}
+{% endif %}
 
 <footer class="footer{% if section.settings.show_divider %} footer--border-top{% endif %}">
   {%- liquid

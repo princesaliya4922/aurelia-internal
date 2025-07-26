@@ -1,8 +1,8 @@
 {% render 'lazy-css', filename: 'section-main-product.css', loading: 'preload' %}
-{% render 'lazy-css', filename: 'custom-product.css', loading: 'preload' %}
 {% render 'lazy-css', filename: 'component-slider.css', loading: 'preload' %}
-{% render 'lazy-css', filename: 'component-price.css', loading: 'preload' %}
+{% render 'lazy-css', filename: 'custom-product.css', loading: 'preload' %}
 
+{% render 'lazy-css', filename: 'component-price.css', loading: 'low' %}
 {% render 'lazy-css', filename: 'component-accordion.css', loading: 'low' %}
 
 {% render 'lazy-css', filename: 'component-rte.css', loading: 'lazy' %}
@@ -1638,8 +1638,8 @@
 </section>
 
 {%- if product.media.size > 0 -%}
-  <script src="{{ 'product-modal.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
+  {% render 'lazy-js', filename: 'product-modal.js', loading: 'lazy' %}
+  {% render 'lazy-js', filename: 'media-gallery.js', loading: 'lazy' %}
 {%- endif -%}
 
 <script>

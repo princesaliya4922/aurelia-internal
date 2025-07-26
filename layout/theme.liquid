@@ -55,11 +55,11 @@
     {% comment %} DNS Prefetch & Preconnect {% endcomment %}
     {% render 'dns-prefetches' %}
 
-    {% comment %} Critical Font Preloads {% endcomment %}
-    {% render 'font-preloads' %}
-
     {% comment %} Critical Image Preloads {% endcomment %}
     {% render 'image-preloads' %}
+
+    {% comment %} Critical Font Preloads {% endcomment %}
+    {% render 'font-preloads' %}
 
     {% comment %} Critical assets {% endcomment %}
     {% render 'core-assets' %}
@@ -83,7 +83,7 @@
     {% render 'redirects' %}
 
     {% comment %} Third-party Script {% endcomment %}
-    {% include 'sr-checkout' %}
+    {% render 'sr-checkout' %}
 
     {% comment %} Admitad Tracking {% endcomment %}
     {% render 'admitad-tracking' %}

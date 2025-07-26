@@ -14,7 +14,11 @@
 <script src="{{ 'pubsub.js' | asset_url }}" defer></script>
 <script src="{{ 'global.js' | asset_url }}" defer></script>
 
-<script src="{{ 'custom.min.js' | asset_url }}" defer></script>
+{% if template.name != 'product' %}
+  <script src="{{ 'custom.min.js' | asset_url }}" defer></script>
+{% else %}
+  {% render 'lazy-js', filename: 'custom.min.js', loading: 'lazy', device: 'desktop' %}
+{% endif %}
 
 {% if template == 'product' %}
   {% render 'lazy-js', filename: 'pincode-js.js', loading: 'lazy' %}
