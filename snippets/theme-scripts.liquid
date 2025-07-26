@@ -1,12 +1,10 @@
-{% if template.name == 'product' %}
-  <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
-{% else %}
-  <script src="{{ 'jquery.min.js' | asset_url }}"></script>
-{% endif %}
+<script src="{{ 'jquery.min.js' | asset_url }}"></script>
 
 <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}" defer></script>
 
-<script src="{{ 'assets-lazy-loader.js' | asset_url }}" defer></script>
+{% if template.name == 'product' %}
+  {% render 'product-render-js-asset' %}
+{% endif %}
 
 <script src="{{ 'vendor-v4.js' | asset_url | split: '?' | first }}" defer></script>
 <script src="{{ 'pubsub.js' | asset_url }}" defer></script>
@@ -15,5 +13,5 @@
 <script src="{{ 'custom.min.js' | asset_url }}" defer></script>
 
 {% if template == 'product' %}
-  <script src="{{ 'pincode-js.js' | asset_url }}" defer></script>
+  {% render 'lazy-js', filename: 'pincode-js.js', loading: 'lazy' %}
 {% endif %}

@@ -3,13 +3,17 @@
 <noscript><link rel="stylesheet" href="{{ 'fontfaces.css' | asset_url }}"></noscript>
 
 {% comment %} Mobile Size Card Product {% endcomment %}
-<link
-  rel="stylesheet"
-  href="{{ 'mobile-size-card-product.css' | asset_url }}"
-  media="print"
-  onload="this.media='all'"
->
-<noscript><link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}"></noscript>
+{% if template.name == 'product' %}
+  {% render 'lazy-css', filename: 'mobile-size-card-product.css', loading: 'lazy' %}
+{% else %}
+  <link
+    rel="stylesheet"
+    href="{{ 'mobile-size-card-product.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript><link rel="stylesheet" href="{{ 'mobile-size-card-product.css' | asset_url }}"></noscript>
+{% endif %}
 
 {% comment %} Font Awesome, Slick CSS {% endcomment %}
 {% if template.name != 'product' %}
@@ -20,8 +24,7 @@
 <link rel="stylesheet" href="{{ 'slick.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="{{ 'slick.css' | asset_url }}"></noscript>
 
-<link rel="stylesheet" href="{{ 'custom.css' | asset_url }}" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="{{ 'custom.css' | asset_url }}"></noscript>
+{% render 'lazy-css', filename: 'custom.css', loading: 'preload' %}
 
 {% comment %} Predictive Search {% endcomment %}
 {%- if settings.predictive_search_enabled -%}
@@ -35,14 +38,19 @@
 {%- endif -%}
 
 {% comment %} Quick View {% endcomment %}
+
 {%- if settings.quick_view_enabled -%}
-  <link
-    rel="stylesheet"
-    href="{{ 'component-quick-view.css' | asset_url }}"
-    media="print"
-    onload="this.media='all'"
-  >
-  <noscript><link rel="stylesheet" href="{{ 'component-quick-view.css' | asset_url }}"></noscript>
+  {% if template.name == 'product' %}
+    {% render 'lazy-css', filename: 'component-quick-view.css', loading: 'lazy' %}
+  {% else %}
+    <link
+      rel="stylesheet"
+      href="{{ 'component-quick-view.css' | asset_url }}"
+      media="print"
+      onload="this.media='all'"
+    >
+    <noscript><link rel="stylesheet" href="{{ 'component-quick-view.css' | asset_url }}"></noscript>
+  {% endif %}
 {%- endif -%}
 
 {% comment %} Color Swatches {% endcomment %}

@@ -1,10 +1,10 @@
 {% render 'lazy-css', filename: 'section-main-product.css', loading: 'preload' %}
 {% render 'lazy-css', filename: 'custom-product.css', loading: 'preload' %}
+{% render 'lazy-css', filename: 'component-slider.css', loading: 'preload' %}
+{% render 'lazy-css', filename: 'component-price.css', loading: 'preload' %}
 
-{% render 'lazy-css', filename: 'component-slider.css', loading: 'low' %}
-{% render 'lazy-css', filename: 'component-price.css', loading: 'low' %}
+{% render 'lazy-css', filename: 'component-accordion.css', loading: 'low' %}
 
-{% render 'lazy-css', filename: 'component-accordion.css', loading: 'lazy' %}
 {% render 'lazy-css', filename: 'component-rte.css', loading: 'lazy' %}
 {% render 'lazy-css', filename: 'component-rating.css', loading: 'lazy' %}
 
@@ -98,7 +98,6 @@
             <ul
               id="Slider-Gallery-{{ section.id }}"
               class="product__media-list grid grid--1-col grid--1-col-tablet slider slider--mobile"
-              role="list"
             >
               {%- liquid
                 assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'

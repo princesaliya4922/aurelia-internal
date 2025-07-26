@@ -1,9 +1,20 @@
-<script type="application/javascript">
+{% comment %} <!-- Declare variable (not render-blocking) --> {% endcomment %}
+<script>
   checkoutBuyer = 'https://fastrr-boost-ui.pickrr.com/';
 </script>
 
 <input type="hidden" value="shopforaurelia.com" id="sellerDomain">
-<link rel="stylesheet" href="https://fastrr-boost-ui.pickrr.com/assets/styles/shopify.css">
+
+{% comment %} <!-- Optimized non-blocking stylesheet load --> {% endcomment %}
+<link
+  rel="preload"
+  as="style"
+  href="https://fastrr-boost-ui.pickrr.com/assets/styles/shopify.css"
+  onload="this.onload=null;this.rel='stylesheet'"
+>
+<noscript><link rel="stylesheet" href="https://fastrr-boost-ui.pickrr.com/assets/styles/shopify.css"></noscript>
+
+{% comment %} <!-- Defer script loading --> {% endcomment %}
 <script src="https://fastrr-boost-ui.pickrr.com/assets/js/channels/shopify.js" defer></script>
 
 <input type="hidden" value="rz" id="template">

@@ -9,28 +9,40 @@
 {% unless template.name == 'product' %}
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
-{% endunless %}
+  <link href="{{ 'component-card.css' | asset_url }}" rel="preload" as="style">
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  <link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
+  {{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
 
-<link href="{{ 'component-card.css' | asset_url }}" rel="preload" as="style">
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-<link href="{{ 'component-product-grid.css' | asset_url }}" rel="preload" as="style">
-{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
-<link
-  rel="stylesheet"
-  href="{{ 'section-product-recommendations.css' | asset_url }}"
-  media="print"
-  onload="this.media='all'"
->
+  {%- if settings.quick_view_enabled and section.settings.enable_quick_view -%}
+    <link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link
+      rel="stylesheet"
+      href="{{ 'component-deferred-media.css' | asset_url }}"
+      media="print"
+      onload="this.media='all'"
+    >
+  {%- endif -%}
 
-{%- if settings.quick_view_enabled and section.settings.enable_quick_view -%}
-  <link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
   <link
     rel="stylesheet"
-    href="{{ 'component-deferred-media.css' | asset_url }}"
+    href="{{ 'section-product-recommendations.css' | asset_url }}"
     media="print"
     onload="this.media='all'"
   >
-{%- endif -%}
+{% endunless %}
+
+{% if template.name == 'product' %}
+  {% render 'lazy-css', filename: 'component-card.css', loading: 'lazy' %}
+  {% render 'lazy-css', filename: 'component-product-grid.css', loading: 'lazy' %}
+  {% render 'lazy-css', filename: 'section-product-recommendations.css', loading: 'lazy' %}
+{% endif %}
+
+<style>
+  .product-recommendations {
+    min-height: 50vh;
+  }
+</style>
 
 <product-recommendations
   class="product-recommendations"

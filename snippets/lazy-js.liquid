@@ -1,44 +1,18 @@
-{%- comment -%}
-  Lazy JavaScript Loader Snippet
-  Usage: {% render 'lazy-js', filename: 'product-zoom.js', loading: 'defer' %}
+{% assign path = filename | asset_url %}
 
-  Parameters:
-  - filename: JavaScript file name (required)
-  - loading: Loading strategy (optional, default: 'defer')
-    - 'async': Asynchronous loading (downloads in parallel, executes immediately)
-    - 'defer': Deferred loading (downloads in parallel, executes after DOM ready) (DEFAULT)
-    - 'lazy': Load on user interaction
-{%- endcomment -%}
+{% case loading %}
+  {% when 'async' %}
+    <script src="{{ path }}" async></script>
 
-{%- liquid
-  assign js_url = filename | asset_url
-  assign loading_strategy = loading | default: 'defer'
--%}
+  {% when 'defer' %}
+    <script src="{{ path }}" defer></script>
 
-{%- case loading_strategy -%}
-  {%- when 'async' -%}
-    <script src="{{ js_url }}" async></script>
-
-  {%- when 'defer' -%}
-    <script src="{{ js_url }}" defer></script>
-
-  {%- when 'lazy' -%}
+  {% when 'lazy' %}
     <script>
-      (function () {
-        function addToQueue() {
-          if (window.lazyResources && typeof window.lazyResources.addScript === 'function') {
-            window.lazyResources.addScript('{{ js_url }}', 'low');
-          } else {
-            setTimeout(addToQueue, 50);
-          }
-        }
-        addToQueue();
-      })();
+      window._lazyJS = window._lazyJS || [];
+      window._lazyJS.push('{{ path }}');
     </script>
-    <noscript>
-      <script src="{{ js_url }}"></script>
-    </noscript>
 
-  {%- else -%}
-    <script src="{{ js_url }}"></script>
-{%- endcase -%}
+  {% else %}
+    <script src="{{ path }}" defer></script>
+{% endcase %}
