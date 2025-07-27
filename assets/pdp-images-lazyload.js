@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!img || img.dataset.loaded === 'true') return;
 
     if (img.dataset.src) {
-      console.log('Loading lazy image:', img.dataset.src);
       img.src = img.dataset.src;
       img.removeAttribute('data-src');
     }
@@ -50,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!img || img.dataset.loaded === 'true') return;
 
     if (img.dataset.src) {
-      console.log('Loading hover image:', img.dataset.src);
       img.src = img.dataset.src;
       img.removeAttribute('data-src');
     }
