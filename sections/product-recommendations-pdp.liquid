@@ -38,11 +38,13 @@
   {% render 'lazy-css', filename: 'section-product-recommendations.css', loading: 'lazy' %}
 {% endif %}
 
-<style>
-  .product-recommendations {
-    min-height: 50vh;
-  }
-</style>
+{% if recommendations.products_count > 0 %}
+  <style>
+    .product-recommendations {
+      min-height: 50vh;
+    }
+  </style>
+{% endif %}
 
 <product-recommendations
   class="product-recommendations"
